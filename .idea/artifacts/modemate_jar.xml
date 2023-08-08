@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="modemate:jar">
+    <output-path>$PROJECT_DIR$/../../server/LocalHost/plugins</output-path>
+    <root id="archive" name="modemate.jar">
+      <element id="module-output" name="modemate" />
+    </root>
+  </artifact>
+</component>

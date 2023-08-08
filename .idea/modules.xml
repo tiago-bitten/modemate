@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/modemate.iml" filepath="$PROJECT_DIR$/modemate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modemate.iml" filepath="$PROJECT_DIR$/.idea/modemate.iml" />
     </modules>
   </component>
 </project>

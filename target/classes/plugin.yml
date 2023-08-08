@@ -1,0 +1,4 @@
+name: modemate
+version: '1.0-SNAPSHOT'
+main: com.labi.main.Modemate
+api-version: '1.20'

@@ -6,8 +6,7 @@ public final class Modemate extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
-
+        getLogger().info("Initialize!!!");
     }
 
     @Override
