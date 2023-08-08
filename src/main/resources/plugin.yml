@@ -1,0 +1,4 @@
+name: modemate
+version: '${project.version}'
+main: com.labi.main.Modemate
+api-version: '1.20'
