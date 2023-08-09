@@ -1,7 +1,6 @@
 package com.labi.listeners;
 // ||
 
-import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -14,7 +13,7 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
-import static com.labi.listeners.utils.SnowballThrowUtils.*;
+import static com.labi.listeners.utils.SnowballUtils.*;
 
 public class ProjectilesEvents implements Listener {
 
@@ -26,9 +25,7 @@ public class ProjectilesEvents implements Listener {
         ItemMeta itemMeta = ((Player) projectile.getShooter()).getInventory().getItemInMainHand().getItemMeta();
         if (itemMeta == null || !itemMeta.getDisplayName().equals(getSnowGrenadeName())) return;
 
-        Vector currentVelocity = projectile.getVelocity();
-        Vector adjustedVelocity = new Vector(currentVelocity.getX() * 0.4, currentVelocity.getY() * 0.7, currentVelocity.getZ() * 0.4);
-        projectile.setVelocity(adjustedVelocity);
+        setVelocity(projectile);
     }
 
     @EventHandler
