@@ -1,6 +1,7 @@
 package com.labi.listeners;
 // ||
 
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -25,7 +26,9 @@ public class ProjectilesEvents implements Listener {
         ItemMeta itemMeta = ((Player) projectile.getShooter()).getInventory().getItemInMainHand().getItemMeta();
         if (itemMeta == null || !itemMeta.getDisplayName().equals(getSnowGrenadeName())) return;
 
-        setVelocity(projectile);
+        updateVelocity(projectile);
+        createParticleTrail(projectile, Particle.SNOWBALL, 3);
+        createParticleTrail(projectile, Particle.SMOKE_NORMAL, 1);
     }
 
     @EventHandler

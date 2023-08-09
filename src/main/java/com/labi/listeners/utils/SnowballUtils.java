@@ -1,8 +1,12 @@
 package com.labi.listeners.utils;
 
+import com.labi.main.Modemate;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class SnowballUtils {
@@ -16,7 +20,7 @@ public class SnowballUtils {
 
     /* event -> Snowball Throw */
     private static final double VECTOR_MULTIPLY_X = 0.4;
-    private static final double VECTOR_MULTIPLY_Y = 0.7;
+    private static final double VECTOR_MULTIPLY_Y = 0.4;
     private static final double VECTOR_MULTIPLY_Z = 0.4;
 
     /* **************** */
@@ -37,7 +41,7 @@ public class SnowballUtils {
     }
 
     /* event -> Snowball Throw */
-    public static void setVelocity(Projectile projectile) {
+    public static void updateVelocity(Projectile projectile) {
         Vector currentVelocity = projectile.getVelocity();
         Vector adjustedVelocity = new Vector(
                 currentVelocity.getX() * VECTOR_MULTIPLY_X,
@@ -45,6 +49,17 @@ public class SnowballUtils {
                 currentVelocity.getZ() * VECTOR_MULTIPLY_Z
         );
         projectile.setVelocity(adjustedVelocity);
+    }
+
+    public static void createParticleTrail(Projectile projectile, Particle particle, int amount) {
+        Bukkit.getScheduler().runTaskTimer(Modemate.getInstance(), () -> {
+            if (!projectile.isValid()) return;
+            applyParticles(projectile, particle, amount);
+        }, 0, 5);
+    }
+
+    private static void applyParticles(Projectile projectile, Particle particle, int amount) {
+        projectile.getWorld().spawnParticle(particle, projectile.getLocation(), amount, 0, 0, 0, 0);
     }
 
     public static String getSnowGrenadeName() {
