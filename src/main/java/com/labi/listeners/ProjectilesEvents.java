@@ -11,24 +11,27 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.util.Vector;
 
+import static com.labi.items.SnowGrenade.isSnowGrenade;
 import static com.labi.listeners.utils.SnowballUtils.*;
 
 public class ProjectilesEvents implements Listener {
 
     @EventHandler
     public void onSnowballThrow(ProjectileLaunchEvent event) {
+        Player player = (Player) event.getEntity().getShooter();
+
         Projectile projectile = event.getEntity();
         if (!(projectile instanceof Snowball)) return;
 
-        ItemMeta itemMeta = ((Player) projectile.getShooter()).getInventory().getItemInMainHand().getItemMeta();
-        if (itemMeta == null || !itemMeta.getDisplayName().equals(getSnowGrenadeName())) return;
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        if (!isSnowGrenade(itemStack)) return;
 
         updateVelocity(projectile);
-        createParticleTrail(projectile, Particle.SNOWBALL, 3);
-        createParticleTrail(projectile, Particle.SMOKE_NORMAL, 1);
+        createParticleTrail(projectile, Particle.SNOWBALL, 1, 2);
+        createParticleTrail(projectile, Particle.SMOKE_NORMAL, 1, 7);
     }
 
     @EventHandler
@@ -38,8 +41,8 @@ public class ProjectilesEvents implements Listener {
         Projectile projectile = event.getEntity();
         if (!(projectile instanceof Snowball)) return;
 
-        ItemMeta itemMeta = player.getInventory().getItemInMainHand().getItemMeta();
-        if (itemMeta == null || !itemMeta.getDisplayName().equals(getSnowGrenadeName())) return;
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        if (!isSnowGrenade(itemStack)) return;
 
         Block hitBlock = event.getHitBlock();
         LivingEntity livingEntity = (LivingEntity) event.getHitEntity();

@@ -6,7 +6,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class SnowballUtils {
@@ -51,11 +50,11 @@ public class SnowballUtils {
         projectile.setVelocity(adjustedVelocity);
     }
 
-    public static void createParticleTrail(Projectile projectile, Particle particle, int amount) {
+    public static void createParticleTrail(Projectile projectile, Particle particle, int amount, int ticks) {
         Bukkit.getScheduler().runTaskTimer(Modemate.getInstance(), () -> {
             if (!projectile.isValid()) return;
             applyParticles(projectile, particle, amount);
-        }, 0, 5);
+        }, 1, ticks);
     }
 
     private static void applyParticles(Projectile projectile, Particle particle, int amount) {
