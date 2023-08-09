@@ -12,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import static com.labi.items.SnowGrenade.isSnowGrenade;
 import static com.labi.listeners.utils.SnowballUtils.*;
@@ -20,7 +19,7 @@ import static com.labi.listeners.utils.SnowballUtils.*;
 public class ProjectilesEvents implements Listener {
 
     @EventHandler
-    public void onSnowballThrow(ProjectileLaunchEvent event) {
+    public void onSnowGrenadeThrow(ProjectileLaunchEvent event) {
         Player player = (Player) event.getEntity().getShooter();
 
         Projectile projectile = event.getEntity();
@@ -35,7 +34,7 @@ public class ProjectilesEvents implements Listener {
     }
 
     @EventHandler
-    public void onSnowballHit(ProjectileHitEvent event) {
+    public void onSnowGreandeHit(ProjectileHitEvent event) {
         Player player = (Player) event.getEntity().getShooter();
 
         Projectile projectile = event.getEntity();
