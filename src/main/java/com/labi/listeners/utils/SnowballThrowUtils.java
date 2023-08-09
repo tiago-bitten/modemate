@@ -11,7 +11,10 @@ public class SnowballThrowUtils {
     private static final String SNOW_GRENADE = ChatColor.YELLOW + "" + ChatColor.BOLD + "" + ChatColor.ITALIC + "Snow Grenade";
 
     public static void explodeSnowball(Projectile projectile, Player player) {
-        projectile.getWorld().createExplosion(projectile.getLocation(), randomExplosion(), true, true, player);
+        final float explosion = randomExplosion();
+        final boolean isBigExplosion = explosion > 0.9f;
+
+        projectile.getWorld().createExplosion(projectile.getLocation(), explosion, isBigExplosion, true, player);
         projectile.remove();
     }
 
