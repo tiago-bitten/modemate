@@ -28,7 +28,6 @@ public class ProjectilesEvents implements Listener {
         ItemMeta itemMeta = player.getInventory().getItemInMainHand().getItemMeta();
 
         if (itemMeta != null && itemMeta.getDisplayName().equals(SNOW_GRENADE)) {
-
             Block hitBlock = event.getHitBlock();
             LivingEntity livingEntity = (LivingEntity) event.getHitEntity();
 
