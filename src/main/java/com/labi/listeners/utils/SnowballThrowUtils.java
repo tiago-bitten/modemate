@@ -12,7 +12,7 @@ public class SnowballThrowUtils {
 
     public static void explodeSnowball(Projectile projectile, Player player) {
         final float explosion = randomExplosion();
-        final boolean isBigExplosion = explosion > 0.9f;
+        final boolean isBigExplosion = explosion > 0.8f;
 
         projectile.getWorld().createExplosion(projectile.getLocation(), explosion, isBigExplosion, true, player);
         projectile.remove();

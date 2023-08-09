@@ -19,6 +19,19 @@ import static com.labi.listeners.utils.SnowballThrowUtils.*;
 public class ProjectilesEvents implements Listener {
 
     @EventHandler
+    public void onSnowballThrow(ProjectileLaunchEvent event) {
+        Projectile projectile = event.getEntity();
+        if (!(projectile instanceof Snowball)) return;
+
+        ItemMeta itemMeta = ((Player) projectile.getShooter()).getInventory().getItemInMainHand().getItemMeta();
+        if (itemMeta == null || !itemMeta.getDisplayName().equals(getSnowGrenadeName())) return;
+
+        Vector currentVelocity = projectile.getVelocity();
+        Vector adjustedVelocity = new Vector(currentVelocity.getX() * 0.4, currentVelocity.getY() * 0.7, currentVelocity.getZ() * 0.4);
+        projectile.setVelocity(adjustedVelocity);
+    }
+
+    @EventHandler
     public void onSnowballHit(ProjectileHitEvent event) {
         Player player = (Player) event.getEntity().getShooter();
 
