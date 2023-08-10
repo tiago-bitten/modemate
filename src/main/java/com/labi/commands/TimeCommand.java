@@ -47,9 +47,27 @@ public class TimeCommand implements CommandExecutor {
             return true;
         }
 
+        if (arg.equalsIgnoreCase("midnight")) {
+            player.getWorld().setTime(18000);
+            player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Time has been set to midnight!");
+            return true;
+        }
+
         if (arg.equalsIgnoreCase("noon")) {
             player.getWorld().setTime(6000);
             player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Time has been set to noon!");
+            return true;
+        }
+
+        if (arg.equalsIgnoreCase("afternoon")) {
+            player.getWorld().setTime(12000);
+            player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Time has been set to afternoon!");
+            return true;
+        }
+
+        if (arg.equalsIgnoreCase("morning")) {
+            player.getWorld().setTime(0);
+            player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Time has been set to morning!");
             return true;
         }
 
