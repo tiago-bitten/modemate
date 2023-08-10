@@ -13,3 +13,6 @@ commands:
     modemate:
         description: Main command
         usage: /<command> <enable/disable>
+    w:
+      description: General commands
+      usage: /w <args>

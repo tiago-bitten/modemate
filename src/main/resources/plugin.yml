@@ -10,6 +10,9 @@ permissions:
     default: op
 
 commands:
-    modemate:
+    mplugin:
         description: Main command
         usage: /<command> <enable/disable>
+    mworld:
+      description: World commands
+      usage: /mworld <args>

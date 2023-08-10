@@ -1,6 +1,7 @@
 package com.labi.main;
 
 import com.labi.commands.ModemateCommand;
+import com.labi.commands.WorldCommand;
 import com.labi.crafts.SnowGrenadeCraft;
 import com.labi.listeners.SnowGrenadeListener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,10 +23,10 @@ public final class Modemate extends JavaPlugin {
 
         /* Main command */
         modemateCommand = new ModemateCommand();
-        getCommand("modemate").setExecutor(modemateCommand);
+        getCommand("mplugin").setExecutor(modemateCommand);
 
         /* Commands */
-
+        getCommand("w").setExecutor(new WorldCommand());
 
         /* Listeners */
         getServer().getPluginManager().registerEvents(new SnowGrenadeListener(modemateCommand), instance);

@@ -4,7 +4,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModemateCommand implements CommandExecutor {
 
@@ -26,10 +30,17 @@ public class ModemateCommand implements CommandExecutor {
             return true;
         }
 
-        boolean commandName = command.getName().equalsIgnoreCase("modemate");
-        if (!commandName) return false;
+        boolean commandName = command.getName().equalsIgnoreCase("mplugin");
+        if (!commandName) return true;
 
-        if (strings[0].equalsIgnoreCase("enable")) {
+        if (strings.length == 0) {
+            player.sendMessage(ChatColor.YELLOW + "/m <args>");
+            return true;
+        }
+
+        String arg = strings[0];
+
+        if (arg.equalsIgnoreCase("enable")) {
             if (isEnable) {
                 player.sendMessage(ChatColor.YELLOW + "modemate is already enabled!");
             }
@@ -40,7 +51,7 @@ public class ModemateCommand implements CommandExecutor {
             return true;
         }
 
-        if (strings[0].equalsIgnoreCase("disable")) {
+        if (arg.equalsIgnoreCase("disable")) {
             if (!isEnable) {
                 player.sendMessage(ChatColor.YELLOW + "modemate is already disabled!");
             }
@@ -50,9 +61,7 @@ public class ModemateCommand implements CommandExecutor {
             }
             return true;
         }
-
-        player.sendMessage(ChatColor.YELLOW + "/modemate <args>");
-        return true;
+        return false;
     }
 
     public boolean isEnable() {
