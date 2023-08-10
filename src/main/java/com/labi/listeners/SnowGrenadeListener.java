@@ -62,6 +62,7 @@ public class SnowGrenadeListener implements Listener {
         if (!(entity instanceof LivingEntity)) return;
 
         LivingEntity livingEntity = (LivingEntity) entity;
-        livingEntity.damage(5.0);
+        livingEntity.damage(3.0);
+        livingEntity.setFireTicks(60);
     }
 }
