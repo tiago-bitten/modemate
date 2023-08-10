@@ -1,6 +1,7 @@
 package com.labi.listeners;
 // ||
 
+import com.labi.commands.ModemateCommand;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -15,8 +16,16 @@ import static com.labi.items.SnowGrenade.isSnowGrenade;
 import static com.labi.listeners.utils.SnowGrenadeUtils.*;
 public class SnowGrenadeListener implements Listener {
 
+    private ModemateCommand modemateCommand;
+
+    public SnowGrenadeListener(ModemateCommand modemateCommand) {
+        this.modemateCommand = modemateCommand;
+    }
+
     @EventHandler
     public void onSnowGrenadeThrow(ProjectileLaunchEvent event) {
+        if (!modemateCommand.isEnable()) return;
+
         Projectile projectile = event.getEntity();
         if (!(projectile instanceof Snowball)) return;
 
@@ -33,6 +42,8 @@ public class SnowGrenadeListener implements Listener {
 
     @EventHandler
     public void onSnowGrenadeHit(ProjectileHitEvent event) {
+        if (!modemateCommand.isEnable()) return;
+
         Projectile projectile = event.getEntity();
         if (!(projectile instanceof Snowball)) return;
 
@@ -51,6 +62,8 @@ public class SnowGrenadeListener implements Listener {
 
     @EventHandler
     public void onSnowGrenadeExplode(EntityDamageEvent event) {
+        if (!modemateCommand.isEnable()) return;
+
         boolean explosionCause = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION;
         boolean projectileCause = event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE;
 

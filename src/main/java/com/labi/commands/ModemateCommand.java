@@ -10,7 +10,7 @@ public class ModemateCommand implements CommandExecutor {
 
     private static final String OPERATOR_PERMISSION = "server.op";
 
-    private static boolean isEnable = false;
+    private static boolean isEnable = true;
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -55,7 +55,7 @@ public class ModemateCommand implements CommandExecutor {
         return true;
     }
 
-    public static boolean isEnable() {
+    public boolean isEnable() {
         return isEnable;
     }
 }

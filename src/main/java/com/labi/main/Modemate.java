@@ -5,11 +5,13 @@ import com.labi.crafts.SnowGrenadeCraft;
 import com.labi.listeners.SnowGrenadeListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import static com.labi.crafts.SnowGrenadeCraft.registerSnowGrenade;
+
 public final class Modemate extends JavaPlugin {
 
     private static Modemate instance;
 
-
+    private ModemateCommand modemateCommand;
 
     @Override
     public void onEnable() {
@@ -19,16 +21,17 @@ public final class Modemate extends JavaPlugin {
         getLogger().info("\u001B[32m" + "Modemate has been enabled!" + "\u001B[0m");
 
         /* Main command */
-        getCommand("modemate").setExecutor(new ModemateCommand());
+        modemateCommand = new ModemateCommand();
+        getCommand("modemate").setExecutor(modemateCommand);
 
         /* Commands */
 
 
         /* Listeners */
-        getServer().getPluginManager().registerEvents(new SnowGrenadeListener(), instance);
+        getServer().getPluginManager().registerEvents(new SnowGrenadeListener(modemateCommand), instance);
 
         /* Crafts */
-        SnowGrenadeCraft.registerSnowGrenade();
+        registerSnowGrenade(instance);
     }
 
     public static Modemate getInstance() {
