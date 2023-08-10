@@ -31,6 +31,8 @@ public class SnowGrenadeUtils {
         final float explosion = randomExplosion();
         final boolean isBigExplosion = explosion > BIG_EXPLOSION;
 
+        if (!projectile.isValid()) return;
+
         projectile.getWorld().createExplosion(projectile.getLocation(), explosion, isBigExplosion, true, player);
         projectile.remove();
     }
