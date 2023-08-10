@@ -1,6 +1,7 @@
 package com.labi.commands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.block.structure.UsageMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,6 +13,7 @@ import java.util.List;
 
 public class ModemateCommand implements CommandExecutor {
 
+    private static final String COMMAND_NAME = "mplugin";
     private static final String OPERATOR_PERMISSION = "server.op";
 
     private static boolean isEnable = true;
@@ -30,11 +32,11 @@ public class ModemateCommand implements CommandExecutor {
             return true;
         }
 
-        boolean commandName = command.getName().equalsIgnoreCase("mplugin");
+        boolean commandName = command.getName().equalsIgnoreCase(COMMAND_NAME);
         if (!commandName) return true;
 
         if (strings.length == 0) {
-            player.sendMessage(ChatColor.YELLOW + "/m <args>");
+            player.sendMessage(ChatColor.YELLOW + "/" + COMMAND_NAME + " <args>");
             return true;
         }
 
@@ -62,6 +64,10 @@ public class ModemateCommand implements CommandExecutor {
             return true;
         }
         return false;
+    }
+
+    public static String getCommandName() {
+        return COMMAND_NAME;
     }
 
     public boolean isEnable() {

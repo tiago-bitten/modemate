@@ -6,8 +6,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class WorldCommand implements CommandExecutor {
+public class TimeCommand implements CommandExecutor {
 
+    private static final String COMMAND_NAME = "mtime";
     private static final String OPERATOR_PERMISSION = "server.op";
 
     @Override
@@ -24,11 +25,11 @@ public class WorldCommand implements CommandExecutor {
             return true;
         }
 
-        boolean commandName = command.getName().equalsIgnoreCase("w");
+        boolean commandName = command.getName().equalsIgnoreCase(COMMAND_NAME);
         if (!commandName) return true;
 
         if (strings.length == 0) {
-            player.sendMessage(ChatColor.YELLOW + "/mworld<args>");
+            player.sendMessage(ChatColor.YELLOW + "/" + COMMAND_NAME + " <args>");
             return true;
         }
 
@@ -83,5 +84,9 @@ public class WorldCommand implements CommandExecutor {
             return true;
         }
         return false;
+    }
+
+    public static String getCommandName() {
+        return COMMAND_NAME;
     }
 }

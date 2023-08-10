@@ -12,7 +12,7 @@ permissions:
 commands:
     mplugin:
         description: Main command
-        usage: /<command> <enable/disable>
-    mworld:
-      description: World commands
-      usage: /mworld <args>
+        usage: /mplugin <args>
+    mtime:
+      description: Allows the player to manipulate the world time
+      usage: /mtime <args>

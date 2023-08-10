@@ -10,9 +10,9 @@ permissions:
     default: op
 
 commands:
-    modemate:
+    mplugin:
         description: Main command
-        usage: /<command> <enable/disable>
-    w:
-      description: General commands
-      usage: /w <args>
+        usage: /mplugin <args>
+    mtime:
+      description: Allows the player to manipulate the world time
+      usage: /mtime <args>
