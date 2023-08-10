@@ -1,6 +1,7 @@
 package com.labi.listeners;
 // ||
 
+import com.labi.items.SnowGrenade;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
@@ -25,8 +26,9 @@ public class ProjectilesEvents implements Listener {
         Projectile projectile = event.getEntity();
         if (!(projectile instanceof Snowball)) return;
 
-        ItemStack itemStack = player.getInventory().getItemInMainHand();
-        if (!isSnowGrenade(itemStack)) return;
+        ItemStack mainHandItemStack = player.getInventory().getItemInMainHand();
+        ItemStack offHandItemStack = player.getInventory().getItemInOffHand();
+        if (!isSnowGrenade(mainHandItemStack) && !isSnowGrenade(offHandItemStack)) return;
 
         updateVelocity(projectile);
         createParticleTrail(projectile, Particle.SNOWBALL, 1, 2);
@@ -34,14 +36,15 @@ public class ProjectilesEvents implements Listener {
     }
 
     @EventHandler
-    public void onSnowGreandeHit(ProjectileHitEvent event) {
+    public void onSnowGrenadeHit(ProjectileHitEvent event) {
         Player player = (Player) event.getEntity().getShooter();
 
         Projectile projectile = event.getEntity();
         if (!(projectile instanceof Snowball)) return;
 
-        ItemStack itemStack = player.getInventory().getItemInMainHand();
-        if (!isSnowGrenade(itemStack)) return;
+        ItemStack mainHandItemStack = player.getInventory().getItemInMainHand();
+        ItemStack offHandItemStack = player.getInventory().getItemInOffHand();
+        if (!isSnowGrenade(mainHandItemStack) && !isSnowGrenade(offHandItemStack)) return;
 
         Block hitBlock = event.getHitBlock();
         LivingEntity livingEntity = (LivingEntity) event.getHitEntity();
