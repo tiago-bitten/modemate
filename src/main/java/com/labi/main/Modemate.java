@@ -1,8 +1,10 @@
 package com.labi.main;
 
+import com.labi.commands.HungerCommand;
 import com.labi.commands.ModemateCommand;
 import com.labi.commands.TimeCommand;
 import com.labi.commands.WeatherCommand;
+import com.labi.listeners.HungerListener;
 import com.labi.listeners.SnowGrenadeListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,6 +14,7 @@ public final class Modemate extends JavaPlugin {
 
     private static Modemate instance;
     private ModemateCommand modemateCommand;
+    private HungerCommand hungerCommand;
 
     @Override
     public void onEnable() {
@@ -28,8 +31,12 @@ public final class Modemate extends JavaPlugin {
         getCommand(TimeCommand.getCommandName()).setExecutor(new TimeCommand());
         getCommand(WeatherCommand.getCommandName()).setExecutor(new WeatherCommand());
 
+        hungerCommand = new HungerCommand();
+        getCommand(HungerCommand.getCommandName()).setExecutor(hungerCommand);
+
         /* Listeners */
         getServer().getPluginManager().registerEvents(new SnowGrenadeListener(modemateCommand), instance);
+        getServer().getPluginManager().registerEvents(new HungerListener(hungerCommand), instance);
 
         /* Crafts */
         registerSnowGrenade(instance);

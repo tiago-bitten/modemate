@@ -19,3 +19,6 @@ commands:
     mweather:
       description: Allows the player to manipulate the world weather
       usage: /mweather <args>
+    mhunger:
+        description: Allows the player to manipulate the player's hunger
+        usage: /mhunger <args>
