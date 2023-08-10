@@ -3,10 +3,8 @@ package com.labi.listeners;
 
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Snowball;
+import org.bukkit.entity.*;
+import org.bukkit.event.EventException;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -46,9 +44,9 @@ public class SnowGrenadeListener implements Listener {
         ItemStack offHandItemStack = player.getInventory().getItemInOffHand();
         if (!isSnowGrenade(mainHandItemStack) && !isSnowGrenade(offHandItemStack)) return;
 
+        Entity entity = event.getHitEntity();
         Block hitBlock = event.getHitBlock();
-        LivingEntity livingEntity = (LivingEntity) event.getHitEntity();
-        if (hitBlock != null && livingEntity != null) return;
+        if (hitBlock != null && entity != null) return;
 
         explodeSnowball(projectile, player);
     }
@@ -60,7 +58,10 @@ public class SnowGrenadeListener implements Listener {
 
         if (!explosionCause && !projectileCause) return;
 
-        LivingEntity livingEntity = (LivingEntity) event.getEntity();
+        Entity entity = event.getEntity();
+        if (!(entity instanceof LivingEntity)) return;
+
+        LivingEntity livingEntity = (LivingEntity) entity;
         livingEntity.damage(5.0);
     }
 }
