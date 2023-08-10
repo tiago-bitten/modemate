@@ -9,6 +9,8 @@ public final class Modemate extends JavaPlugin {
 
     private static Modemate instance;
 
+
+
     @Override
     public void onEnable() {
         instance = this;
@@ -16,11 +18,14 @@ public final class Modemate extends JavaPlugin {
         /* Plugin startup */
         getLogger().info("\u001B[32m" + "Modemate has been enabled!" + "\u001B[0m");
 
-        /* Commands */
+        /* Main command */
         getCommand("modemate").setExecutor(new ModemateCommand());
 
+        /* Commands */
+
+
         /* Listeners */
-        getServer().getPluginManager().registerEvents(new SnowGrenadeListener(), this);
+        getServer().getPluginManager().registerEvents(new SnowGrenadeListener(), instance);
 
         /* Crafts */
         SnowGrenadeCraft.registerSnowGrenade();

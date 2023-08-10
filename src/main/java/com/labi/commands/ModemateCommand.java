@@ -8,7 +8,9 @@ import org.bukkit.entity.Player;
 
 public class ModemateCommand implements CommandExecutor {
 
-    // TODO: Create a command to enable e disable the plugin
+    private static final String OPERATOR_PERMISSION = "server.op";
+
+    private static boolean isEnable = false;
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -19,15 +21,41 @@ public class ModemateCommand implements CommandExecutor {
 
         Player player = (Player) commandSender;
 
-        if (!player.hasPermission("modemate.command.switch")) {
-            player.sendMessage(ChatColor.DARK_RED + "" + ChatColor.ITALIC + "You don't have permission!");
+        if (!player.hasPermission(OPERATOR_PERMISSION)) {
+            player.sendMessage(ChatColor.DARK_RED + "You don't have permission!");
             return true;
         }
 
-        if (command.getName().equalsIgnoreCase("modemate")) {
-            player.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.ITALIC + "Modemate v1.0.0");
+        boolean commandName = command.getName().equalsIgnoreCase("modemate");
+        if (!commandName) return false;
+
+        if (strings[0].equalsIgnoreCase("enable")) {
+            if (isEnable) {
+                player.sendMessage(ChatColor.YELLOW + "modemate is already enabled!");
+            }
+            else {
+                isEnable = true;
+                player.sendMessage(ChatColor.GREEN + "modemate has been enabled!");
+            }
             return true;
         }
+
+        if (strings[0].equalsIgnoreCase("disable")) {
+            if (!isEnable) {
+                player.sendMessage(ChatColor.YELLOW + "modemate is already disabled!");
+            }
+            else {
+                isEnable = false;
+                player.sendMessage(ChatColor.RED + "modemate has been disabled!");
+            }
+            return true;
+        }
+
+        player.sendMessage(ChatColor.YELLOW + "/modemate <args>");
         return true;
+    }
+
+    public static boolean isEnable() {
+        return isEnable;
     }
 }

@@ -5,7 +5,7 @@ main: com.labi.main.Modemate
 api-version: '1.20'
 
 permissions:
-  modemate.command.switch:
+  modemate.command.op:
     description: Allows the player to switch between enable and disable
     default: op
 
