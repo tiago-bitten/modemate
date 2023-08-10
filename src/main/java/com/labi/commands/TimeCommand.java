@@ -11,6 +11,14 @@ public class TimeCommand implements CommandExecutor {
     private static final String COMMAND_NAME = "mtime";
     private static final String OPERATOR_PERMISSION = "server.op";
 
+    private static final int SUNRISE = 0;
+    private static final int MORNING = 1000;
+    private static final int NOON = 6000;
+    private static final int AFTERNOON = 12000;
+    private static final int SUNSET = 13000;
+    private static final int NIGHT = 14000;
+    private static final int MIDNIGHT = 18000;
+
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (!(commandSender instanceof Player)) {
@@ -35,44 +43,44 @@ public class TimeCommand implements CommandExecutor {
 
         String arg = strings[0];
 
-        if (arg.equalsIgnoreCase("day")) {
-            player.getWorld().setTime(1000);
+        if (arg.equalsIgnoreCase("sunrise")) {
+            player.getWorld().setTime(SUNRISE);
             player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Time has been set to day!");
             return true;
         }
 
-        if (arg.equalsIgnoreCase("night")) {
-            player.getWorld().setTime(13000);
+        if (arg.equalsIgnoreCase("morning")) {
+            player.getWorld().setTime(MORNING);
             player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Time has been set to night!");
             return true;
         }
 
-        if (arg.equalsIgnoreCase("midnight")) {
-            player.getWorld().setTime(18000);
+        if (arg.equalsIgnoreCase("noon")) {
+            player.getWorld().setTime(NOON);
             player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Time has been set to midnight!");
             return true;
         }
 
-        if (arg.equalsIgnoreCase("noon")) {
-            player.getWorld().setTime(6000);
+        if (arg.equalsIgnoreCase("afternoon")) {
+            player.getWorld().setTime(AFTERNOON);
             player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Time has been set to noon!");
             return true;
         }
 
-        if (arg.equalsIgnoreCase("afternoon")) {
-            player.getWorld().setTime(12000);
+        if (arg.equalsIgnoreCase("sunset")) {
+            player.getWorld().setTime(SUNSET);
             player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Time has been set to afternoon!");
             return true;
         }
 
-        if (arg.equalsIgnoreCase("morning")) {
-            player.getWorld().setTime(0);
+        if (arg.equalsIgnoreCase("night")) {
+            player.getWorld().setTime(NIGHT);
             player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Time has been set to morning!");
             return true;
         }
 
         if (arg.equalsIgnoreCase("midnight")) {
-            player.getWorld().setTime(18000);
+            player.getWorld().setTime(MIDNIGHT);
             player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Time has been set to midnight!");
             return true;
         }
@@ -80,25 +88,6 @@ public class TimeCommand implements CommandExecutor {
         if (arg.equalsIgnoreCase("sun")) {
             player.getWorld().setStorm(false);
             player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Weather has been set to sun!");
-            return true;
-        }
-
-        if (arg.equalsIgnoreCase("rain")) {
-            player.getWorld().setStorm(true);
-            player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Weather has been set to rain!");
-            return true;
-        }
-
-        if (arg.equalsIgnoreCase("thunder")) {
-            player.getWorld().setThundering(true);
-            player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Weather has been set to thunder!");
-            return true;
-        }
-
-        if (arg.equalsIgnoreCase("clear")) {
-            player.getWorld().setThundering(false);
-            player.getWorld().setStorm(false);
-            player.sendMessage(ChatColor.GREEN + "modemate: " + ChatColor.WHITE + "Weather has been set to clear!");
             return true;
         }
         return false;
