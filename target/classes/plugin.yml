@@ -1,4 +1,15 @@
 name: modemate
-version: '1.0-SNAPSHOT'
+author: tussat
+version: '1.0'
 main: com.labi.main.Modemate
 api-version: '1.20'
+
+permissions:
+  modemate.command.switch:
+    description: Allows the player to switch between enable and disable
+    default: op
+
+commands:
+    modemate:
+        description: Main command
+        usage: /<command> <enable/disable>
