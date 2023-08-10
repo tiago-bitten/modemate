@@ -29,7 +29,6 @@ public class TimeCommand implements CommandExecutor, TabCompleter {
         }
 
         Player player = (Player) commandSender;
-
         if (!player.hasPermission(OPERATOR_PERMISSION)) {
             player.sendMessage(ChatColor.DARK_RED + "You don't have permission!");
             return true;
@@ -91,9 +90,8 @@ public class TimeCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-        List<String> args = List.of("sunrise", "morning", "noon", "afternoon", "sunset", "night", "midnight");
         if (strings.length == 1) {
-            return args;
+            return List.of("sunrise", "morning", "noon", "afternoon", "sunset", "night", "midnight");
         }
         return null;
     }

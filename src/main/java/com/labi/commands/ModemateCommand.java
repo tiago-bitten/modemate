@@ -26,7 +26,6 @@ public class ModemateCommand implements CommandExecutor {
         }
 
         Player player = (Player) commandSender;
-
         if (!player.hasPermission(OPERATOR_PERMISSION)) {
             player.sendMessage(ChatColor.DARK_RED + "You don't have permission!");
             return true;

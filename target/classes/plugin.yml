@@ -16,3 +16,6 @@ commands:
     mtime:
       description: Allows the player to manipulate the world time
       usage: /mtime <args>
+    mweather:
+      description: Allows the player to manipulate the world weather
+      usage: /mweather <args>

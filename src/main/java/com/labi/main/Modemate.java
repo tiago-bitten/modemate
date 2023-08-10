@@ -2,6 +2,7 @@ package com.labi.main;
 
 import com.labi.commands.ModemateCommand;
 import com.labi.commands.TimeCommand;
+import com.labi.commands.WeatherCommand;
 import com.labi.listeners.SnowGrenadeListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,6 +26,7 @@ public final class Modemate extends JavaPlugin {
 
         /* Commands */
         getCommand(TimeCommand.getCommandName()).setExecutor(new TimeCommand());
+        getCommand(WeatherCommand.getCommandName()).setExecutor(new WeatherCommand());
 
         /* Listeners */
         getServer().getPluginManager().registerEvents(new SnowGrenadeListener(modemateCommand), instance);
