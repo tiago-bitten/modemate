@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModemateCommand implements CommandExecutor {
+public class ModemateCommand implements CommandExecutor, TabCompleter {
 
     private static final String COMMAND_NAME = "mplugin";
     private static final String OPERATOR_PERMISSION = "server.op";
@@ -71,5 +71,13 @@ public class ModemateCommand implements CommandExecutor {
 
     public boolean isEnable() {
         return isEnable;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+        if (strings.length == 1) {
+            return List.of("enable", "disable");
+        }
+        return null;
     }
 }
