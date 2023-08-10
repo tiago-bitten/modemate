@@ -3,6 +3,7 @@ package com.labi.items;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Projectile;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -31,7 +32,7 @@ public class SnowGrenade {
         return snowGrenade;
     }
 
-    public static boolean isSnowGrenade(ItemStack itemStack) {
+    public static boolean isSnowGrenadeThrow(ItemStack itemStack) {
         if (itemStack == null || itemStack.getType() != Material.SNOWBALL) {
             return false;
         }
