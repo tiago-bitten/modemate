@@ -3,10 +3,12 @@ package com.labi.listeners;
 
 import com.labi.commands.ModemateCommand;
 import com.labi.utils.CooldownMap;
-import org.bukkit.ChatColor;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -14,7 +16,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 
-import static com.labi.items.SnowGrenade.*;
+import static com.labi.items.SnowGrenade.isSnowGrenadeThrow;
 import static com.labi.listeners.utils.SnowGrenadeUtils.*;
 public class SnowGrenadeListener implements Listener {
 

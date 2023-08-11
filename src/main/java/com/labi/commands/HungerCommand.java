@@ -25,7 +25,7 @@ public class HungerCommand implements CommandExecutor, TabCompleter {
 
         Player player = (Player) commandSender;
         if (!player.hasPermission(OPERATOR_PERMISSION)) {
-            player.sendMessage("\u001B[31m" + "You don't have permission!" + "\u001B[0m");
+            player.sendMessage(ChatColor.DARK_RED + "You don't have permission!");
             return true;
         }
 
@@ -33,7 +33,8 @@ public class HungerCommand implements CommandExecutor, TabCompleter {
         if (!commandName) return true;
 
         if (strings.length == 0) {
-            player.sendMessage("\u001B[33m" + "/" + COMMAND_NAME + " <args>" + "\u001B[0m");
+            player.sendMessage(ChatColor.YELLOW + "/" + COMMAND_NAME + " <args>");
+            player.sendMessage(ChatColor.YELLOW + "/" + COMMAND_NAME + " <action> <player> <amount>");
             return true;
         }
 
@@ -68,14 +69,65 @@ public class HungerCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
         }
+
+        if (strings.length == 3) {
+            if (!isHungerEnable) {
+                player.sendMessage(ChatColor.RED + "hunger is disabled!");
+                return true;
+            }
+
+            String actionArg = strings[1];
+            String targetArg = strings[0];
+            String amountArg = strings[2];
+
+            try {
+                Player target = Bukkit.getPlayer(targetArg);
+                if (!target.isOnline()) {
+                    player.sendMessage(ChatColor.YELLOW + "The player" + target.getName() + "is not online!");
+                    return true;
+                }
+
+                if (actionArg.equalsIgnoreCase("set")) {
+                    if (amountArg.equalsIgnoreCase("max")) {
+                        target.setFoodLevel(20);
+                        player.sendMessage(ChatColor.GREEN + "You have set " + target.getName() + "'s hunger to max!");
+                        return true;
+                    }
+
+                    if (amountArg.equalsIgnoreCase("half")) {
+                        target.setFoodLevel(10);
+                        player.sendMessage(ChatColor.GREEN + "You have set " + target.getName() + "'s hunger to half!");
+                        return true;
+                    }
+
+                    if (amountArg.equalsIgnoreCase("min")) {
+                        target.setFoodLevel(0);
+                        player.sendMessage(ChatColor.GREEN + "You have set " + target.getName() + "'s hunger to zero!");
+                        return true;
+                    }
+                }
+            }
+            catch (Exception e) {
+                player.sendMessage(ChatColor.RED + "An error occurred!");
+                return true;
+            }
+        }
+
         return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
         if (strings.length == 1) {
-            return List.of("enable", "disable");
+            return List.of("enable", "disable", "set");
         }
+
+        // TODO: tab complete for players
+
+        if (strings.length == 3) {
+            return List.of("max", "half", "min");
+        }
+
         return null;
     }
 
