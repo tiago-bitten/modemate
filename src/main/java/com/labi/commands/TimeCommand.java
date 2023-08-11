@@ -9,33 +9,27 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class TimeCommand implements CommandExecutor, TabCompleter {
+public class TimeCommand extends DefaultImpCommand implements CommandExecutor, TabCompleter {
 
-    private static final String COMMAND_NAME = "mtime";
-    private static final String OPERATOR_PERMISSION = "server.op";
+
+    public TimeCommand(String commandName, String operatorPermission) {
+        super(commandName, operatorPermission);
+    }
     private static final int SUNRISE = 0;
     private static final int MORNING = 1000;
     private static final int NOON = 6000;
     private static final int AFTERNOON = 12000;
     private static final int SUNSET = 13000;
     private static final int NIGHT = 14000;
+
     private static final int MIDNIGHT = 18000;
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if (!(commandSender instanceof Player)) {
-            commandSender.sendMessage("\u001B[31m" + "Only players can execute this command!" + "\u001B[0m");
-            return true;
-        }
+
+        if (!defaultCheck(commandSender, command)) return true;
 
         Player player = (Player) commandSender;
-        if (!player.hasPermission(OPERATOR_PERMISSION)) {
-            player.sendMessage(ChatColor.DARK_RED + "You don't have permission!");
-            return true;
-        }
-
-        boolean commandName = command.getName().equalsIgnoreCase(COMMAND_NAME);
-        if (!commandName) return true;
 
         if (strings.length == 0) {
             player.sendMessage(ChatColor.YELLOW + "/" + COMMAND_NAME + " <args>");
@@ -94,9 +88,5 @@ public class TimeCommand implements CommandExecutor, TabCompleter {
             return List.of("sunrise", "morning", "noon", "afternoon", "sunset", "night", "midnight");
         }
         return null;
-    }
-
-    public static String getCommandName() {
-        return COMMAND_NAME;
     }
 }

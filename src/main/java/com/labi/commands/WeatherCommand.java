@@ -9,9 +9,14 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class WeatherCommand implements CommandExecutor, TabCompleter {
+public class WeatherCommand extends DefaultImpCommand implements CommandExecutor, TabCompleter {
+
+    public WeatherCommand(String commandName, String operatorPermission) {
+        super(commandName, operatorPermission);
+    }
 
     private static final String COMMAND_NAME = "mweather";
+
     private static final String OPERATOR_PERMISSION = "server.op";
 
     @Override
@@ -74,9 +79,5 @@ public class WeatherCommand implements CommandExecutor, TabCompleter {
             return List.of("sun", "rain", "thunder", "clear");
         }
         return null;
-    }
-
-    public static String getCommandName() {
-        return COMMAND_NAME;
     }
 }

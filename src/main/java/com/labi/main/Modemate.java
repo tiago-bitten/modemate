@@ -13,8 +13,11 @@ import static com.labi.crafts.SnowGrenadeCraft.registerSnowGrenade;
 public final class Modemate extends JavaPlugin {
 
     private static Modemate instance;
+
     private ModemateCommand modemateCommand;
     private HungerCommand hungerCommand;
+    private TimeCommand timeCommand;
+    private WeatherCommand weatherCommand;
 
     @Override
     public void onEnable() {
@@ -28,11 +31,14 @@ public final class Modemate extends JavaPlugin {
         getCommand(modemateCommand.getCommandName()).setExecutor(modemateCommand);
 
         /* Commands */
-        getCommand(TimeCommand.getCommandName()).setExecutor(new TimeCommand());
-        getCommand(WeatherCommand.getCommandName()).setExecutor(new WeatherCommand());
+        timeCommand = new TimeCommand("mtime", "server.op");
+        getCommand(timeCommand.getCommandName()).setExecutor(timeCommand);
 
-        hungerCommand = new HungerCommand();
-        getCommand(HungerCommand.getCommandName()).setExecutor(hungerCommand);
+        weatherCommand = new WeatherCommand("mweather", "server.op");
+        getCommand(weatherCommand.getCommandName()).setExecutor(weatherCommand);
+
+        hungerCommand = new HungerCommand("mhunger", "server.op");
+        getCommand(hungerCommand.getCommandName()).setExecutor(hungerCommand);
 
         /* Listeners */
         getServer().getPluginManager().registerEvents(new SnowGrenadeListener(modemateCommand), instance);

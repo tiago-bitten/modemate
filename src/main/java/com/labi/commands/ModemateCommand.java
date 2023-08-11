@@ -55,10 +55,6 @@ public class ModemateCommand extends DefaultImpCommand implements CommandExecuto
         return false;
     }
 
-    public String getCommandName() {
-        return super.COMMAND_NAME;
-    }
-
     public boolean isEnable() {
         return isEnable;
     }
@@ -69,24 +65,5 @@ public class ModemateCommand extends DefaultImpCommand implements CommandExecuto
             return List.of("enable", "disable");
         }
         return null;
-    }
-
-    @Override
-    Boolean defaultCheck(CommandSender commandSender, Command command) {
-        if (!(commandSender instanceof Player)) {
-            commandSender.sendMessage("\u001B[31m" + "Only players can execute this command!" + "\u001B[0m");
-            return false;
-        }
-
-        Player player = (Player) commandSender;
-        if (!player.hasPermission(super.OPERATOR_PERMISSION)) {
-            player.sendMessage(ChatColor.DARK_RED + "You don't have permission!");
-            return false;
-        }
-
-        boolean commandName = command.getName().equalsIgnoreCase(super.COMMAND_NAME);
-        if (!commandName) return false;
-
-        return true;
     }
 }

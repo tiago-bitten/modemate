@@ -10,27 +10,20 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class HungerCommand implements CommandExecutor, TabCompleter {
+public class HungerCommand extends DefaultImpCommand implements CommandExecutor, TabCompleter {
 
-    private static final String COMMAND_NAME = "mhunger";
-    private static final String OPERATOR_PERMISSION = "server.op";
+    public HungerCommand(String commandName, String operatorPermission) {
+        super(commandName, operatorPermission);
+    }
+
     private static boolean isHungerEnable = true;
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if (!(commandSender instanceof Player)) {
-            commandSender.sendMessage("\u001B[31m" + "Only players can execute this command!" + "\u001B[0m");
-            return true;
-        }
+
+        if (!defaultCheck(commandSender, command)) return true;
 
         Player player = (Player) commandSender;
-        if (!player.hasPermission(OPERATOR_PERMISSION)) {
-            player.sendMessage(ChatColor.DARK_RED + "You don't have permission!");
-            return true;
-        }
-
-        boolean commandName = command.getName().equalsIgnoreCase(COMMAND_NAME);
-        if (!commandName) return true;
 
         String difficult = player.getWorld().getDifficulty().toString();
         if (difficult.equalsIgnoreCase("peaceful")) {
@@ -125,10 +118,6 @@ public class HungerCommand implements CommandExecutor, TabCompleter {
         }
 
         return null;
-    }
-
-    public static String getCommandName() {
-        return COMMAND_NAME;
     }
 
     public boolean isHungerEnable() {
