@@ -24,8 +24,8 @@ public final class Modemate extends JavaPlugin {
         getLogger().info("\u001B[32m" + "modemate has been enabled!" + "\u001B[0m");
 
         /* Main command */
-        modemateCommand = new ModemateCommand();
-        getCommand(ModemateCommand.getCommandName()).setExecutor(modemateCommand);
+        modemateCommand = new ModemateCommand("mplugin", "server.op");
+        getCommand(modemateCommand.getCommandName()).setExecutor(modemateCommand);
 
         /* Commands */
         getCommand(TimeCommand.getCommandName()).setExecutor(new TimeCommand());

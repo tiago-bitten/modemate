@@ -12,7 +12,6 @@ import java.util.List;
 public class WeatherCommand implements CommandExecutor, TabCompleter {
 
     private static final String COMMAND_NAME = "mweather";
-
     private static final String OPERATOR_PERMISSION = "server.op";
 
     @Override

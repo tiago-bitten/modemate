@@ -12,6 +12,7 @@ import java.util.List;
 public class TimeCommand implements CommandExecutor, TabCompleter {
 
     private static final String COMMAND_NAME = "mtime";
+    private static final String OPERATOR_PERMISSION = "server.op";
     private static final int SUNRISE = 0;
     private static final int MORNING = 1000;
     private static final int NOON = 6000;
@@ -19,7 +20,6 @@ public class TimeCommand implements CommandExecutor, TabCompleter {
     private static final int SUNSET = 13000;
     private static final int NIGHT = 14000;
     private static final int MIDNIGHT = 18000;
-    private static final String OPERATOR_PERMISSION = "server.op";
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
