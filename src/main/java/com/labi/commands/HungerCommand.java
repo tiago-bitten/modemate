@@ -76,10 +76,6 @@ public class HungerCommand implements CommandExecutor, TabCompleter {
 
             try {
                 Player target = Bukkit.getPlayer(targetArg);
-                if (target == null) {
-                    player.sendMessage(ChatColor.YELLOW + "The player" + target.getName() + "is not online!");
-                    return true;
-                }
 
                 if (actionArg.equalsIgnoreCase("set")) {
                     if (amountArg.equalsIgnoreCase("max")) {
@@ -105,7 +101,7 @@ public class HungerCommand implements CommandExecutor, TabCompleter {
                 }
             }
             catch (Exception e) {
-                player.sendMessage(ChatColor.RED + e.getMessage());
+                player.sendMessage(ChatColor.RED + "Player " + targetArg + " is not online!");
                 return true;
             }
         }
