@@ -33,7 +33,7 @@ public class HungerCommand implements CommandExecutor, TabCompleter {
         if (!commandName) return true;
 
         if (strings.length == 0) {
-            player.sendMessage(ChatColor.YELLOW + "/" + COMMAND_NAME + " <args>");
+            player.sendMessage(ChatColor.YELLOW + "/" + COMMAND_NAME + " <enable/disable>");
             player.sendMessage(ChatColor.YELLOW + "/" + COMMAND_NAME + " <action> <player> <amount>");
             return true;
         }
@@ -76,13 +76,13 @@ public class HungerCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            String actionArg = strings[1];
-            String targetArg = strings[0];
+            String actionArg = strings[0];
+            String targetArg = strings[1];
             String amountArg = strings[2];
 
             try {
                 Player target = Bukkit.getPlayer(targetArg);
-                if (!target.isOnline()) {
+                if (target == null) {
                     player.sendMessage(ChatColor.YELLOW + "The player" + target.getName() + "is not online!");
                     return true;
                 }
@@ -105,13 +105,19 @@ public class HungerCommand implements CommandExecutor, TabCompleter {
                         player.sendMessage(ChatColor.GREEN + "You have set " + target.getName() + "'s hunger to zero!");
                         return true;
                     }
+
+                    player.sendMessage(ChatColor.YELLOW + "<amount> must be max, half or min!");
+                    return true;
                 }
             }
             catch (Exception e) {
-                player.sendMessage(ChatColor.RED + "An error occurred!");
+                player.sendMessage(ChatColor.RED + e.getMessage());
                 return true;
             }
         }
+
+        player.sendMessage(ChatColor.YELLOW + "/" + COMMAND_NAME + " <action>");
+        player.sendMessage(ChatColor.YELLOW + "/" + COMMAND_NAME + " <action> <player> <amount>");
 
         return true;
     }
