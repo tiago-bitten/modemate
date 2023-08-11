@@ -36,7 +36,7 @@ public class SnowGrenadeListener implements Listener {
         Player player = (Player) projectile.getShooter();
 
         if (grenadeCooldowns.isOnCooldown(player)) {
-            player.sendMessage(ChatColor.RED + "You can't throw another snow grenade yet!");
+            player.sendMessage(grenadeCooldowns.getMsgCooldown(player, "s to launch again!"));
             event.setCancelled(true);
             return;
         }
