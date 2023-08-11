@@ -2,6 +2,8 @@ package com.labi.listeners;
 // ||
 
 import com.labi.commands.ModemateCommand;
+import com.labi.utils.CooldownMap;
+import org.bukkit.ChatColor;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -16,8 +18,11 @@ import static com.labi.items.SnowGrenade.*;
 import static com.labi.listeners.utils.SnowGrenadeUtils.*;
 public class SnowGrenadeListener implements Listener {
 
-    private boolean isSnowGrenadeFlag = false;
-    private ModemateCommand modemateCommand;
+    private final CooldownMap<Player> grenadeCooldowns = new CooldownMap<>();
+    private final Long SNOW_GRENADE_COOLDOWN = 2000L;
+    private static boolean isSnowGrenade = false;
+
+    private final ModemateCommand modemateCommand;
 
     public SnowGrenadeListener(ModemateCommand modemateCommand) {
         this.modemateCommand = modemateCommand;
@@ -30,31 +35,40 @@ public class SnowGrenadeListener implements Listener {
         Projectile projectile = event.getEntity();
         Player player = (Player) projectile.getShooter();
 
+        if (grenadeCooldowns.isOnCooldown(player)) {
+            player.sendMessage(ChatColor.RED + "You can't throw another snow grenade yet!");
+            event.setCancelled(true);
+            return;
+        }
+
         ItemStack mainHandItemStack = player.getInventory().getItemInMainHand();
         ItemStack offHandItemStack = player.getInventory().getItemInOffHand();
         if (!isSnowGrenadeThrow(mainHandItemStack) && !isSnowGrenadeThrow(offHandItemStack)) return;
 
-        isSnowGrenadeFlag = true;
-
         updateVelocity(projectile);
         createParticleTrail(projectile, Particle.SNOWBALL, 1, 2);
         createParticleTrail(projectile, Particle.SMOKE_NORMAL, 1, 7);
+
+        isSnowGrenade = true;
+        grenadeCooldowns.setCooldown(player, SNOW_GRENADE_COOLDOWN);
     }
 
     @EventHandler
     public void onSnowGrenadeHit(ProjectileHitEvent event) {
         if (!modemateCommand.isEnable()) return;
-        if (!isSnowGrenadeFlag) return;
-        isSnowGrenadeFlag = false;
+        if (!isSnowGrenade) return;
+
+        Projectile projectile = event.getEntity();
 
         Entity entity = event.getHitEntity();
         Block hitBlock = event.getHitBlock();
         if (hitBlock != null && entity != null) return;
 
-        Projectile projectile = event.getEntity();
         Player player = (Player) projectile.getShooter();
 
         explodeSnowball(projectile, player);
+
+        isSnowGrenade = false;
     }
 
     @EventHandler

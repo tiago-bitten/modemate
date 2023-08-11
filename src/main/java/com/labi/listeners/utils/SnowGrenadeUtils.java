@@ -1,8 +1,8 @@
 package com.labi.listeners.utils;
 
+import com.labi.items.SnowGrenade;
 import com.labi.main.Modemate;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -10,7 +10,7 @@ import org.bukkit.util.Vector;
 
 public class SnowGrenadeUtils {
 
-    private static final String SNOW_GRENADE = ChatColor.YELLOW + "" + ChatColor.BOLD + "" + ChatColor.ITALIC + "Snow Grenade";
+    private static final String SNOW_GRENADE = SnowGrenade.getItemName();
 
     /* event -> Snowball Hit */
     private static final float BIG_EXPLOSION = 0.8f;
