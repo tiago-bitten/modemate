@@ -32,12 +32,6 @@ public class HungerCommand implements CommandExecutor, TabCompleter {
         boolean commandName = command.getName().equalsIgnoreCase(COMMAND_NAME);
         if (!commandName) return true;
 
-        if (strings.length == 0) {
-            player.sendMessage(ChatColor.YELLOW + "/" + COMMAND_NAME + " <enable/disable>");
-            player.sendMessage(ChatColor.YELLOW + "/" + COMMAND_NAME + " <action> <player> <amount>");
-            return true;
-        }
-
         String difficult = player.getWorld().getDifficulty().toString();
         if (difficult.equalsIgnoreCase("peaceful")) {
             player.sendMessage(ChatColor.YELLOW + "The world difficulty is set to peaceful, you can't use this command!");
