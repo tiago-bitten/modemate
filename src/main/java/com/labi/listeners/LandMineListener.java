@@ -6,9 +6,26 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+
+import static com.labi.items.LandMine.isLandMine;
 
 public class LandMineListener implements Listener {
+
+    @EventHandler
+    public void onPlaceLandMine(BlockPlaceEvent event) {
+        Player player = event.getPlayer();
+
+        boolean material = event.getBlockPlaced().getType().equals(Material.STONE_PRESSURE_PLATE);
+        if (!material) return;
+
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+        if (!isLandMine(itemInHand)) return;
+
+        player.sendMessage("You placed a land mine");
+    }
 
     @EventHandler
     public void onStepOnLandMine(PlayerInteractEvent event) {

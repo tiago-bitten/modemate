@@ -1,7 +1,5 @@
 package com.labi.crafts;
 
-import com.labi.commands.ModemateCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -10,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import static com.labi.items.SnowGrenade.createSnowGrenade;
 
-public class SnowGrenadeCraft implements RegisterCraft {
+public class SnowGrenadeCraft implements CraftInterface {
 
     private static ItemStack snowGrenade = createSnowGrenade();
 

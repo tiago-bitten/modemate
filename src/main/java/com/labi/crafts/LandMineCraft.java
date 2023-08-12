@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import static com.labi.items.LandMine.createLandMine;
 
-public class LandMineCraft implements RegisterCraft {
+public class LandMineCraft implements CraftInterface {
 
     private static ItemStack landMine = createLandMine();
 
