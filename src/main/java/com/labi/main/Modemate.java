@@ -44,7 +44,7 @@ public final class Modemate extends JavaPlugin {
         /* Listeners */
         getServer().getPluginManager().registerEvents(new SnowGrenadeListener(modemateCommand), instance);
         getServer().getPluginManager().registerEvents(new HungerListener(hungerCommand), instance);
-        getServer().getPluginManager().registerEvents(new FlyListener(), instance);
+        getServer().getPluginManager().registerEvents(new FlyListener(modemateCommand), instance);
 
         /* Crafts */
         registerSnowGrenade(instance);
