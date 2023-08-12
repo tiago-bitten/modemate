@@ -10,11 +10,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import static com.labi.items.SnowGrenade.createSnowGrenade;
 
-public class SnowGrenadeCraft {
+public class SnowGrenadeCraft implements RegisterCraft {
 
     private static ItemStack snowGrenade = createSnowGrenade();
 
-    public static void registerSnowGrenade(JavaPlugin modemate) {
+
+    @Override
+    public void register(JavaPlugin modemate) {
         ShapedRecipe customRecipe = new ShapedRecipe(NamespacedKey.minecraft("snow_grenade"), snowGrenade)
                 .shape("PPP", "PSP", "PPP")
                 .setIngredient('P', Material.GUNPOWDER)

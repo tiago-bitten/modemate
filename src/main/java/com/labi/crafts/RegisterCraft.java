@@ -4,5 +4,5 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public interface RegisterCraft {
 
-    void register(JavaPlugin plugin);
+    void register(JavaPlugin modemate);
 }
