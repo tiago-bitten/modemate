@@ -4,6 +4,7 @@ import com.labi.commands.HungerCommand;
 import com.labi.commands.ModemateCommand;
 import com.labi.commands.TimeCommand;
 import com.labi.commands.WeatherCommand;
+import com.labi.crafts.LandMineCraft;
 import com.labi.listeners.FlyListener;
 import com.labi.listeners.HungerListener;
 import com.labi.listeners.LandMineListener;
@@ -50,6 +51,9 @@ public final class Modemate extends JavaPlugin {
 
         /* Crafts */
         registerSnowGrenade(instance);
+
+        LandMineCraft landMineCraft = new LandMineCraft();
+        landMineCraft.register(instance);
     }
 
     public static Modemate getInstance() {
