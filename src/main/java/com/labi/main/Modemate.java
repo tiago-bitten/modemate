@@ -6,6 +6,7 @@ import com.labi.commands.TimeCommand;
 import com.labi.commands.WeatherCommand;
 import com.labi.listeners.FlyListener;
 import com.labi.listeners.HungerListener;
+import com.labi.listeners.LandMineListener;
 import com.labi.listeners.SnowGrenadeListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -45,6 +46,7 @@ public final class Modemate extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SnowGrenadeListener(modemateCommand), instance);
         getServer().getPluginManager().registerEvents(new HungerListener(hungerCommand), instance);
         getServer().getPluginManager().registerEvents(new FlyListener(modemateCommand), instance);
+        getServer().getPluginManager().registerEvents(new LandMineListener(), instance);
 
         /* Crafts */
         registerSnowGrenade(instance);
