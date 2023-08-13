@@ -2,6 +2,7 @@ package com.labi.items;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -31,12 +32,18 @@ public class LandMine {
         return landMine;
     }
 
-    public static boolean isLandMine(ItemStack item) {
+    public static boolean isLandMineItem(ItemStack item) {
         if (item == null) return false;
         if (!item.hasItemMeta()) return false;
         if (!item.getItemMeta().hasCustomModelData()) return false;
 
         return item.getItemMeta().getCustomModelData() == ITEM_UUID.hashCode();
+    }
+
+    public static boolean isLandMineBlock(Block block) {
+        if (block == null) return false;
+
+        return block.hasMetadata("land-mine");
     }
 
     public static UUID getItemUUID() {
