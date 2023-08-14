@@ -15,11 +15,11 @@ public class SnowGrenadeCraft implements CraftInterface {
 
     @Override
     public void register(JavaPlugin modemate) {
-        ShapedRecipe customRecipe = new ShapedRecipe(NamespacedKey.minecraft("snow_grenade"), snowGrenade)
+        ShapedRecipe snowGrenadeRecipe = new ShapedRecipe(NamespacedKey.minecraft("snow_grenade"), snowGrenade)
                 .shape("PPP", "PSP", "PPP")
                 .setIngredient('P', Material.GUNPOWDER)
                 .setIngredient('S', Material.SNOWBALL);
 
-        modemate.getServer().addRecipe(customRecipe);
+        modemate.getServer().addRecipe(snowGrenadeRecipe);
     }
 }
