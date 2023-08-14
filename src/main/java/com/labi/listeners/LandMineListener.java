@@ -16,10 +16,10 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import static com.labi.items.LandMine.*;
+import static com.labi.listeners.utils.LandMineUtils.explodeLandMine;
 
 public class LandMineListener implements Listener {
 
-    private final LandMineUtils landMineUtils = new LandMineUtils();
     private final CooldownMap<Player> cooldownMap = new CooldownMap<>();
     private static final long LANDMINE_COOLWDOWN = 7000L;
 
@@ -37,14 +37,14 @@ public class LandMineListener implements Listener {
 
         Player player = event.getPlayer();
 
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+        if (!isLandMineItem(itemInHand)) return;
+
         if (cooldownMap.isOnCooldown(player)) {
             player.sendMessage(cooldownMap.getMsgCooldown(player, "s to place again!"));
             event.setCancelled(true);
             return;
         }
-
-        ItemStack itemInHand = player.getInventory().getItemInMainHand();
-        if (!isLandMineItem(itemInHand)) return;
 
         Block block = event.getBlockPlaced();
         block.setMetadata(getItemName(), new FixedMetadataValue(modemate, true));
@@ -64,7 +64,7 @@ public class LandMineListener implements Listener {
 
         Player player = event.getPlayer();
 
-        landMineUtils.explode(block, player);
+        explodeLandMine(block, player);
 
         event.setCancelled(true);
         block.setType(Material.AIR);

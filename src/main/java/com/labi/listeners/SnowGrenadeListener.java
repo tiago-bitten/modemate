@@ -23,7 +23,6 @@ import static com.labi.listeners.utils.SnowGrenadeUtils.*;
 
 public class SnowGrenadeListener implements Listener {
 
-    private final SnowGrenadeUtils snowGrenadeUtils = new SnowGrenadeUtils();
     private final CooldownMap<Player> cooldownMap = new CooldownMap<>();
     private static final Long SNOW_GRENADE_COOLDOWN = 2000L;
     private static boolean isSnowGrenade = false;
@@ -74,7 +73,7 @@ public class SnowGrenadeListener implements Listener {
 
         Player player = (Player) projectile.getShooter();
 
-        snowGrenadeUtils.explode(projectile, player);
+        explodeSnowGrenade(projectile, player);
         isSnowGrenade = false;
     }
 

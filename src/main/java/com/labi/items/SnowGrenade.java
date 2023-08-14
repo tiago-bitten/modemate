@@ -37,7 +37,7 @@ public class SnowGrenade {
         if (!item.hasItemMeta()) return false;
 
         ItemMeta itemMeta = item.getItemMeta();
-        return itemMeta.getDisplayName().equals(ITEM_NAME);
+        return itemMeta.getCustomModelData() == ITEM_UUID.hashCode();
     }
 
     public static UUID getItemUUID() {

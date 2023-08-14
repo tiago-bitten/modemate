@@ -1,15 +1,13 @@
 package com.labi.listeners.utils;
 
-import com.labi.items.SnowGrenade;
 import com.labi.main.Modemate;
-import com.labi.utils.ExplodeItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.util.Vector;
 
-public class SnowGrenadeUtils implements ExplodeItem<Projectile, Player> {
+public class SnowGrenadeUtils {
 
     /* event -> Snowball Hit */
     private static final float BIG_EXPLOSION = 0.8f;
@@ -27,15 +25,14 @@ public class SnowGrenadeUtils implements ExplodeItem<Projectile, Player> {
 
     /* event -> Snowball Hit */
 
-    @Override
-    public void explode(Projectile obj, Player reference) {
+    public static void explodeSnowGrenade(Projectile projectile, Player reference) {
         final float explosion = randomExplosion();
         final boolean isBigExplosion = explosion > BIG_EXPLOSION;
 
-        if (!obj.isValid()) return;
+        if (!projectile.isValid()) return;
 
-        obj.getWorld().createExplosion(obj.getLocation(), explosion, isBigExplosion, true, reference);
-        obj.remove();
+        projectile.getWorld().createExplosion(projectile.getLocation(), explosion, isBigExplosion, true, reference);
+        projectile.remove();
     }
 
     private static Float randomExplosion() {
