@@ -18,7 +18,7 @@ public class C4 {
     private static final String ITEM_LORE = ChatColor.GRAY + "Click to arm, click again to detonate.";
 
     public static ItemStack createC4() {
-        ItemStack c4 = new ItemStack(Material.SPRUCE_BUTTON);
+        ItemStack c4 = new ItemStack(Material.LIGHTNING_ROD);
         ItemMeta c4Meta = c4.getItemMeta();
 
         c4Meta.setDisplayName(ITEM_NAME);
@@ -33,7 +33,7 @@ public class C4 {
     }
 
     public static boolean isC4Item(ItemStack item) {
-        if (item == null || item.getType() != Material.SPRUCE_BUTTON) return false;
+        if (item == null || item.getType() != Material.LIGHTNING_ROD) return false;
         if (!item.hasItemMeta()) return false;
 
         ItemMeta itemMeta = item.getItemMeta();

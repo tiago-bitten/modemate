@@ -20,12 +20,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import static com.labi.items.C4.getItemUUID;
 import static com.labi.items.C4.isC4Item;
 import static com.labi.items.DetonatorC4.isDetonatorC4Item;
-import static com.labi.listeners.utils.C4Utils.explodeC4;
 
 public class C4Listener implements Listener {
 
     private CooldownMap<Player> cooldownMap = new CooldownMap<>();
-    private static final Long C4_COOLDOWN = 5000L;
+    private static final Long C4_COOLDOWN = 15000L;
     private static boolean isC4Placed = false;
 
     private C4Utils c4Utils = new C4Utils();
@@ -61,7 +60,6 @@ public class C4Listener implements Listener {
         }
 
         c4Utils.setC4(event.getBlockPlaced());
-        c4Utils.getC4().setType(Material.FLOWER_POT);
         c4Utils.getC4().setMetadata(String.valueOf(getItemUUID()), new FixedMetadataValue(modemate, true));
 
         cooldownMap.setCooldown(player, C4_COOLDOWN);
@@ -87,7 +85,7 @@ public class C4Listener implements Listener {
             return;
         }
 
-        explodeC4(player, true);
+        c4Utils.explodeC4(player, true);
         isC4Placed = false;
     }
 
@@ -99,7 +97,7 @@ public class C4Listener implements Listener {
 
         if (!block.hasMetadata(String.valueOf(getItemUUID()))) return;
 
-        explodeC4(null, false);
+        c4Utils.explodeC4(null, false);
         isC4Placed = false;
     }
 
@@ -122,7 +120,7 @@ public class C4Listener implements Listener {
             return;
         }
 
-        explodeC4(player, true);
+        c4Utils.explodeC4(player, true);
         isC4Placed = false;
     }
 }
