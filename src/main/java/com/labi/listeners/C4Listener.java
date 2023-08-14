@@ -1,8 +1,10 @@
 package com.labi.listeners;
 
 import com.labi.commands.ModemateCommand;
+import com.labi.listeners.utils.C4Utils;
 import com.labi.utils.CooldownMap;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +16,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static com.labi.items.C4.*;
+import static com.labi.items.C4.getItemUUID;
+import static com.labi.items.C4.isC4Item;
+import static com.labi.items.DetonatorC4.isDetonatorC4Item;
 import static com.labi.listeners.utils.C4Utils.explodeC4;
 
 public class C4Listener implements Listener {
@@ -22,6 +26,9 @@ public class C4Listener implements Listener {
     private CooldownMap<Player> cooldownMap = new CooldownMap<>();
     private static final Long C4_COOLDOWN = 5000L;
     private static boolean isC4Placed = false;
+
+    private C4Utils c4Utils = new C4Utils();
+
     private static JavaPlugin modemate;
     private static ModemateCommand modemateCommand;
 
@@ -52,9 +59,9 @@ public class C4Listener implements Listener {
             return;
         }
 
-        Block c4Block = event.getBlockPlaced();
-
-        c4Block.setMetadata(String.valueOf(getItemUUID()), new FixedMetadataValue(modemate, true));
+        c4Utils.setC4(event.getBlockPlaced());
+        c4Utils.getC4().setType(Material.FLOWER_POT);
+        c4Utils.getC4().setMetadata(String.valueOf(getItemUUID()), new FixedMetadataValue(modemate, true));
 
         cooldownMap.setCooldown(player, C4_COOLDOWN);
         isC4Placed = true;
@@ -64,15 +71,43 @@ public class C4Listener implements Listener {
     public void onC4Activate(PlayerInteractEvent event) {
         if (!modemateCommand.isEnable()) return;
 
-        boolean action = event.getAction().equals(Action.RIGHT_CLICK_BLOCK);
+        Player player = event.getPlayer();
+
+        if (!isC4Placed) {
+            player.sendMessage(ChatColor.YELLOW + "You must place a C4 first!");
+            return;
+        }
+
+        boolean action = event.getAction().equals(Action.RIGHT_CLICK_AIR);
         if (!action) return;
 
-        Block block = event.getClickedBlock();
-        if (!isC4Block(block)) return;
+        ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
+        ItemStack itemInOffHand = event.getPlayer().getInventory().getItemInOffHand();
+
+        if (!isDetonatorC4Item(itemInMainHand) && !isDetonatorC4Item(itemInOffHand)) return;
+
+        explodeC4(player);
+        isC4Placed = false;
+    }
+
+    @EventHandler
+    public void onPlaceDetonator(BlockPlaceEvent event) {
+        ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
+
+        if (!isDetonatorC4Item(itemInMainHand)) return;
 
         Player player = event.getPlayer();
 
-        explodeC4(block, player);
+        Block block = event.getBlockPlaced();
+        block.setType(Material.AIR);
+        event.setCancelled(true);
+
+        if (!isC4Placed) {
+            player.sendMessage(ChatColor.YELLOW + "You must place a C4 first!");
+            return;
+        }
+
+        explodeC4(player);
         isC4Placed = false;
     }
 }
