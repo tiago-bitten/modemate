@@ -12,8 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static com.labi.items.LandMine.isLandMineBlock;
-import static com.labi.items.LandMine.isLandMineItem;
+import static com.labi.items.LandMine.*;
 
 public class LandMineListener implements Listener {
 
@@ -32,9 +31,7 @@ public class LandMineListener implements Listener {
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         if (!isLandMineItem(itemInHand)) return;
 
-        block.setMetadata("land-mine", new FixedMetadataValue(modemate, true));
-
-        player.sendMessage("Land mine placed!");
+        block.setMetadata(getItemName(), new FixedMetadataValue(modemate, true));
     }
 
     @EventHandler
@@ -47,7 +44,7 @@ public class LandMineListener implements Listener {
         Block block = event.getClickedBlock();
         if (!isLandMineBlock(block)) return;
 
-        block.getWorld().createExplosion(block.getLocation(), 100f, false, true, player);
+        block.getWorld().createExplosion(block.getLocation(), 5f, true, true, player);
         event.setCancelled(true);
         block.setType(Material.AIR);
     }
