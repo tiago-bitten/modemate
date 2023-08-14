@@ -1,11 +1,9 @@
 package com.labi.listeners;
 
 import com.labi.commands.ModemateCommand;
-import com.labi.listeners.utils.LandMineUtils;
 import com.labi.utils.CooldownMap;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

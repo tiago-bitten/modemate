@@ -26,6 +26,6 @@ public class CooldownMap<T> {
     }
 
     public String getMsgCooldown(T key, String msg) {
-        return ChatColor.GRAY + String.format("%.1f", getRestCooldown(key) / 1000.0) + " " + msg;
+        return ChatColor.GRAY + String.format("%.1f", getRestCooldown(key) / 1000.0) + msg;
     }
 }
