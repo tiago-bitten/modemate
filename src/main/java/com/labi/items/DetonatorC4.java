@@ -17,7 +17,7 @@ public class DetonatorC4 {
     private static final String ITEM_LORE = ChatColor.GRAY + "Click to detonate all C4s in a 5 block radius.";
 
     public static ItemStack createDetonatorC4() {
-        ItemStack detonatorC4 = new ItemStack(Material.SPRUCE_BUTTON);
+        ItemStack detonatorC4 = new ItemStack(Material.STONE_BUTTON);
         ItemMeta detonatorC4Meta = detonatorC4.getItemMeta();
 
         detonatorC4Meta.setDisplayName(ITEM_NAME);
@@ -32,7 +32,7 @@ public class DetonatorC4 {
     }
 
     public static boolean isDetonatorC4Item(ItemStack item) {
-        if (item == null || item.getType() != Material.SPRUCE_BUTTON) return false;
+        if (item == null || item.getType() != Material.STONE_BUTTON) return false;
         if (!item.hasItemMeta()) return false;
 
         ItemMeta itemMeta = item.getItemMeta();

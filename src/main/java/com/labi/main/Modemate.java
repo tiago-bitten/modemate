@@ -5,6 +5,7 @@ import com.labi.commands.ModemateCommand;
 import com.labi.commands.TimeCommand;
 import com.labi.commands.WeatherCommand;
 import com.labi.crafts.C4Craft;
+import com.labi.crafts.DetonatorC4Craft;
 import com.labi.crafts.LandMineCraft;
 import com.labi.crafts.SnowGrenadeCraft;
 import com.labi.listeners.*;
@@ -57,6 +58,9 @@ public final class Modemate extends JavaPlugin {
 
         C4Craft c4Craft = new C4Craft();
         c4Craft.register(instance);
+
+        DetonatorC4Craft detonatorC4Craft = new DetonatorC4Craft();
+        detonatorC4Craft.register(instance);
     }
 
     public static Modemate getInstance() {
