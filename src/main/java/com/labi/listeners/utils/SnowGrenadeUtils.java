@@ -11,8 +11,6 @@ import org.bukkit.util.Vector;
 
 public class SnowGrenadeUtils implements ExplodeItem<Projectile, Player> {
 
-    private static final String SNOW_GRENADE = SnowGrenade.getItemName();
-
     /* event -> Snowball Hit */
     private static final float BIG_EXPLOSION = 0.8f;
     private static final float MIN_EXPLOSION = 0.6f;
@@ -66,7 +64,4 @@ public class SnowGrenadeUtils implements ExplodeItem<Projectile, Player> {
         projectile.getWorld().spawnParticle(particle, projectile.getLocation(), amount, 0, 0, 0, 0);
     }
 
-    public static String getSnowGrenadeName() {
-        return SNOW_GRENADE;
-    }
 }

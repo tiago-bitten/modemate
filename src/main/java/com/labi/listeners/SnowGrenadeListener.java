@@ -24,8 +24,8 @@ import static com.labi.listeners.utils.SnowGrenadeUtils.*;
 public class SnowGrenadeListener implements Listener {
 
     private final SnowGrenadeUtils snowGrenadeUtils = new SnowGrenadeUtils();
-    private final CooldownMap<Player> grenadeCooldowns = new CooldownMap<>();
-    private final Long SNOW_GRENADE_COOLDOWN = 2000L;
+    private final CooldownMap<Player> cooldownMap = new CooldownMap<>();
+    private static final Long SNOW_GRENADE_COOLDOWN = 2000L;
     private static boolean isSnowGrenade = false;
 
     private final JavaPlugin modemate;
@@ -43,8 +43,8 @@ public class SnowGrenadeListener implements Listener {
         Projectile projectile = event.getEntity();
         Player player = (Player) projectile.getShooter();
 
-        if (grenadeCooldowns.isOnCooldown(player)) {
-            player.sendMessage(grenadeCooldowns.getMsgCooldown(player, "s to launch again!"));
+        if (cooldownMap.isOnCooldown(player)) {
+            player.sendMessage(cooldownMap.getMsgCooldown(player, "s to launch again!"));
             event.setCancelled(true);
             return;
         }
@@ -58,7 +58,7 @@ public class SnowGrenadeListener implements Listener {
         createParticleTrail(projectile, Particle.SMOKE_NORMAL, 1, 7);
 
         isSnowGrenade = true;
-        grenadeCooldowns.setCooldown(player, SNOW_GRENADE_COOLDOWN);
+        cooldownMap.setCooldown(player, SNOW_GRENADE_COOLDOWN);
     }
 
     @EventHandler

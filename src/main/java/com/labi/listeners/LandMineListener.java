@@ -2,6 +2,7 @@ package com.labi.listeners;
 
 import com.labi.commands.ModemateCommand;
 import com.labi.listeners.utils.LandMineUtils;
+import com.labi.utils.CooldownMap;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -19,6 +20,9 @@ import static com.labi.items.LandMine.*;
 public class LandMineListener implements Listener {
 
     private final LandMineUtils landMineUtils = new LandMineUtils();
+    private final CooldownMap<Player> cooldownMap = new CooldownMap<>();
+    private static final long LANDMINE_COOLWDOWN = 7000L;
+
     private JavaPlugin modemate;
     private ModemateCommand modemateCommand;
 
@@ -33,12 +37,19 @@ public class LandMineListener implements Listener {
 
         Player player = event.getPlayer();
 
-        Block block = event.getBlockPlaced();
+        if (cooldownMap.isOnCooldown(player)) {
+            player.sendMessage(cooldownMap.getMsgCooldown(player, "s to place again!"));
+            event.setCancelled(true);
+            return;
+        }
 
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         if (!isLandMineItem(itemInHand)) return;
 
+        Block block = event.getBlockPlaced();
         block.setMetadata(getItemName(), new FixedMetadataValue(modemate, true));
+
+        cooldownMap.setCooldown(player, LANDMINE_COOLWDOWN);
     }
 
     @EventHandler
