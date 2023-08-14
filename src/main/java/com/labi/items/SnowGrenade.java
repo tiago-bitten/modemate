@@ -23,7 +23,7 @@ public class SnowGrenade {
 
         snowGrenadeMeta.setDisplayName(ITEM_NAME);
         snowGrenadeMeta.setLore(Arrays.asList(ITEM_LORE));
-        snowGrenadeMeta.setCustomModelData((int) ITEM_UUID.getMostSignificantBits());
+        snowGrenadeMeta.setCustomModelData(ITEM_UUID.hashCode());
         snowGrenadeMeta.addEnchant(Enchantment.DURABILITY, 1, false);
         snowGrenadeMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
@@ -32,16 +32,11 @@ public class SnowGrenade {
         return snowGrenade;
     }
 
-    public static boolean isSnowGrenadeThrow(ItemStack itemStack) {
-        if (itemStack == null || itemStack.getType() != Material.SNOWBALL) {
-            return false;
-        }
+    public static boolean isSnowGrenadeThrow(ItemStack item) {
+        if (item == null || item.getType() != Material.SNOWBALL) return false;
+        if (!item.hasItemMeta()) return false;
 
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null) {
-            return false;
-        }
-
+        ItemMeta itemMeta = item.getItemMeta();
         return itemMeta.getDisplayName().equals(ITEM_NAME);
     }
 

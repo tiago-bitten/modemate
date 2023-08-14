@@ -15,10 +15,6 @@ public class WeatherCommand extends DefaultImpCommand implements CommandExecutor
         super(commandName, operatorPermission);
     }
 
-    private static final String COMMAND_NAME = "mweather";
-
-    private static final String OPERATOR_PERMISSION = "server.op";
-
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (!(commandSender instanceof Player)) {

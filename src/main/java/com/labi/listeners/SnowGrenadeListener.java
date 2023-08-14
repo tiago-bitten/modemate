@@ -43,15 +43,15 @@ public class SnowGrenadeListener implements Listener {
         Projectile projectile = event.getEntity();
         Player player = (Player) projectile.getShooter();
 
+        ItemStack mainHandItemStack = player.getInventory().getItemInMainHand();
+        ItemStack offHandItemStack = player.getInventory().getItemInOffHand();
+        if (!isSnowGrenadeThrow(mainHandItemStack) && !isSnowGrenadeThrow(offHandItemStack)) return;
+
         if (cooldownMap.isOnCooldown(player)) {
             player.sendMessage(cooldownMap.getMsgCooldown(player, "s to launch again!"));
             event.setCancelled(true);
             return;
         }
-
-        ItemStack mainHandItemStack = player.getInventory().getItemInMainHand();
-        ItemStack offHandItemStack = player.getInventory().getItemInOffHand();
-        if (!isSnowGrenadeThrow(mainHandItemStack) && !isSnowGrenadeThrow(offHandItemStack)) return;
 
         updateVelocity(projectile);
         createParticleTrail(projectile, Particle.SNOWBALL, 1, 2);
@@ -75,7 +75,6 @@ public class SnowGrenadeListener implements Listener {
         Player player = (Player) projectile.getShooter();
 
         snowGrenadeUtils.explode(projectile, player);
-
         isSnowGrenade = false;
     }
 

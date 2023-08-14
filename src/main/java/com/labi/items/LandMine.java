@@ -33,11 +33,12 @@ public class LandMine {
     }
 
     public static boolean isLandMineItem(ItemStack item) {
-        if (item == null) return false;
+        if (item == null || item.getType() != Material.STONE_PRESSURE_PLATE) return false;
         if (!item.hasItemMeta()) return false;
-        if (!item.getItemMeta().hasCustomModelData()) return false;
 
-        return item.getItemMeta().getCustomModelData() == ITEM_UUID.hashCode();
+        ItemMeta itemMeta = item.getItemMeta();
+
+        return itemMeta.getCustomModelData() == ITEM_UUID.hashCode();
     }
 
     public static boolean isLandMineBlock(Block block) {

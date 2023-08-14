@@ -6,10 +6,7 @@ import com.labi.commands.TimeCommand;
 import com.labi.commands.WeatherCommand;
 import com.labi.crafts.LandMineCraft;
 import com.labi.crafts.SnowGrenadeCraft;
-import com.labi.listeners.FlyListener;
-import com.labi.listeners.HungerListener;
-import com.labi.listeners.LandMineListener;
-import com.labi.listeners.SnowGrenadeListener;
+import com.labi.listeners.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
