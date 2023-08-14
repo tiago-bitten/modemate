@@ -2,13 +2,14 @@ package com.labi.listeners.utils;
 
 import com.labi.items.SnowGrenade;
 import com.labi.main.Modemate;
+import com.labi.utils.ExplodeItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.util.Vector;
 
-public class SnowGrenadeUtils {
+public class SnowGrenadeUtils implements ExplodeItem<Projectile, Player> {
 
     private static final String SNOW_GRENADE = SnowGrenade.getItemName();
 
@@ -27,21 +28,23 @@ public class SnowGrenadeUtils {
     /* **************** */
 
     /* event -> Snowball Hit */
-    public static void explodeSnowball(Projectile projectile, Player player) {
+
+    @Override
+    public void explode(Projectile obj, Player reference) {
         final float explosion = randomExplosion();
         final boolean isBigExplosion = explosion > BIG_EXPLOSION;
 
-        if (!projectile.isValid()) return;
+        if (!obj.isValid()) return;
 
-        projectile.getWorld().createExplosion(projectile.getLocation(), explosion, isBigExplosion, true, player);
-        projectile.remove();
+        obj.getWorld().createExplosion(obj.getLocation(), explosion, isBigExplosion, true, reference);
+        obj.remove();
     }
 
     private static Float randomExplosion() {
         return (float) (Math.random() * (MAX_EXPLOSION - MIN_EXPLOSION) + MIN_EXPLOSION);
     }
-
     /* event -> Snowball Throw */
+
     public static void updateVelocity(Projectile projectile) {
         Vector currentVelocity = projectile.getVelocity();
         Vector adjustedVelocity = new Vector(

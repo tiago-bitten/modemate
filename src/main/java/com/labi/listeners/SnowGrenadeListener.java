@@ -2,6 +2,7 @@ package com.labi.listeners;
 // ||
 
 import com.labi.commands.ModemateCommand;
+import com.labi.listeners.utils.SnowGrenadeUtils;
 import com.labi.utils.CooldownMap;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -22,6 +23,7 @@ import static com.labi.listeners.utils.SnowGrenadeUtils.*;
 
 public class SnowGrenadeListener implements Listener {
 
+    private final SnowGrenadeUtils snowGrenadeUtils = new SnowGrenadeUtils();
     private final CooldownMap<Player> grenadeCooldowns = new CooldownMap<>();
     private final Long SNOW_GRENADE_COOLDOWN = 2000L;
     private static boolean isSnowGrenade = false;
@@ -72,7 +74,7 @@ public class SnowGrenadeListener implements Listener {
 
         Player player = (Player) projectile.getShooter();
 
-        explodeSnowball(projectile, player);
+        snowGrenadeUtils.explode(projectile, player);
 
         isSnowGrenade = false;
     }
