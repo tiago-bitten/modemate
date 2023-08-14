@@ -57,7 +57,7 @@ public class LandMineListener implements Listener {
         Location blockLocation = event.getBlockPlaced().getLocation();
 
         if (!checkRadius(blockLocation, placedBlocksLocations)) {
-            player.sendMessage(ChatColor.RED + "You can't place a landmine here!");
+            player.sendMessage(ChatColor.RED + "There is a landmine nearby!");
             event.setCancelled(true);
             return;
         }
@@ -87,6 +87,5 @@ public class LandMineListener implements Listener {
         placedBlocksLocations.remove(blockLocation);
 
         event.setCancelled(true);
-        block.setType(Material.AIR);
     }
 }
