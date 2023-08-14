@@ -27,6 +27,8 @@ public class LandMineListener implements Listener {
 
     @EventHandler
     public void onPlaceLandMine(BlockPlaceEvent event) {
+        if (!modemateCommand.isEnable()) return;
+
         Player player = event.getPlayer();
 
         Block block = event.getBlockPlaced();
@@ -39,13 +41,15 @@ public class LandMineListener implements Listener {
 
     @EventHandler
     public void onStepOnLandMine(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
+        if (!modemateCommand.isEnable()) return;
 
         boolean action = event.getAction().equals(Action.PHYSICAL);
         if (!action) return;
 
         Block block = event.getClickedBlock();
         if (!isLandMineBlock(block)) return;
+
+        Player player = event.getPlayer();
 
         block.getWorld().createExplosion(block.getLocation(), 5f, true, true, player);
         event.setCancelled(true);
