@@ -3,6 +3,8 @@ package com.labi.listeners;
 import com.labi.commands.ModemateCommand;
 import com.labi.listeners.utils.LandMineUtils;
 import com.labi.utils.CooldownMap;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -15,13 +17,19 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static com.labi.items.LandMine.*;
+import static com.labi.listeners.utils.LandMineUtils.checkRadius;
 import static com.labi.listeners.utils.LandMineUtils.explodeLandMine;
 
 public class LandMineListener implements Listener {
 
+    private final Set<Location> placedBlocksLocations = new HashSet<>();
     private final CooldownMap<Player> cooldownMap = new CooldownMap<>();
     private static final long LANDMINE_COOLWDOWN = 7000L;
+
 
     private JavaPlugin modemate;
     private ModemateCommand modemateCommand;
@@ -46,10 +54,19 @@ public class LandMineListener implements Listener {
             return;
         }
 
+        Location blockLocation = event.getBlockPlaced().getLocation();
+
+        if (!checkRadius(blockLocation, placedBlocksLocations)) {
+            player.sendMessage(ChatColor.RED + "You can't place a landmine here!");
+            event.setCancelled(true);
+            return;
+        }
+
         Block block = event.getBlockPlaced();
         block.setMetadata(getItemName(), new FixedMetadataValue(modemate, true));
 
         cooldownMap.setCooldown(player, LANDMINE_COOLWDOWN);
+        placedBlocksLocations.add(blockLocation);
     }
 
     @EventHandler
@@ -65,6 +82,9 @@ public class LandMineListener implements Listener {
         Player player = event.getPlayer();
 
         explodeLandMine(block, player);
+
+        Location blockLocation = block.getLocation();
+        placedBlocksLocations.remove(blockLocation);
 
         event.setCancelled(true);
         block.setType(Material.AIR);
