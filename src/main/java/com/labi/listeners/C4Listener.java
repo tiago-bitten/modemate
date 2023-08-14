@@ -23,11 +23,9 @@ import static com.labi.items.DetonatorC4.isDetonatorC4Item;
 
 public class C4Listener implements Listener {
 
+    private C4Utils c4Utils = new C4Utils();
     private CooldownMap<Player> cooldownMap = new CooldownMap<>();
     private static final Long C4_COOLDOWN = 15000L;
-    private static boolean isC4Placed = false;
-
-    private C4Utils c4Utils = new C4Utils();
 
     private static JavaPlugin modemate;
     private static ModemateCommand modemateCommand;
@@ -53,7 +51,7 @@ public class C4Listener implements Listener {
             return;
         }
 
-        if (isC4Placed) {
+        if (c4Utils.getC4Placed()) {
             player.sendMessage(ChatColor.YELLOW + "You can only place one C4 at a time!");
             event.setCancelled(true);
             return;
@@ -63,7 +61,7 @@ public class C4Listener implements Listener {
         c4Utils.getC4().setMetadata(String.valueOf(getItemUUID()), new FixedMetadataValue(modemate, true));
 
         cooldownMap.setCooldown(player, C4_COOLDOWN);
-        isC4Placed = true;
+        c4Utils.setC4Placed(true);
     }
 
     @EventHandler
@@ -80,13 +78,12 @@ public class C4Listener implements Listener {
 
         if (!isDetonatorC4Item(itemInMainHand) && !isDetonatorC4Item(itemInOffHand)) return;
 
-        if (!isC4Placed) {
+        if (!c4Utils.getC4Placed()) {
             player.sendMessage(ChatColor.YELLOW + "You must place a C4 first!");
             return;
         }
 
         c4Utils.explodeC4(player, true);
-        isC4Placed = false;
     }
 
     @EventHandler
@@ -98,7 +95,7 @@ public class C4Listener implements Listener {
         if (!block.hasMetadata(String.valueOf(getItemUUID()))) return;
 
         c4Utils.explodeC4(null, false);
-        isC4Placed = false;
+        c4Utils.setC4Placed(false);
     }
 
     @EventHandler
@@ -115,12 +112,12 @@ public class C4Listener implements Listener {
         block.setType(Material.AIR);
         event.setCancelled(true);
 
-        if (!isC4Placed) {
+        if (!c4Utils.getC4Placed()) {
             player.sendMessage(ChatColor.YELLOW + "You must place a C4 first!");
             return;
         }
 
         c4Utils.explodeC4(player, true);
-        isC4Placed = false;
+        c4Utils.setC4Placed(false);
     }
 }

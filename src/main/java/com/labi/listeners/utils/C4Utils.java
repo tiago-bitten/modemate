@@ -26,6 +26,7 @@ public class C4Utils {
                 applyParticleEffect(c4.getLocation(), Particle.FLASH, 50, 5);
                 applyParticleEffect(c4.getLocation(), Particle.FLAME, 50, 0);
                 c4 = null;
+                isC4Placed = false;
             }, C4_COOLDOWN_SECONDS * 20L);
         }
         else {
@@ -81,7 +82,7 @@ public class C4Utils {
         this.c4 = c4;
     }
 
-    public boolean isC4Placed() {
+    public boolean getC4Placed() {
         return isC4Placed;
     }
 
