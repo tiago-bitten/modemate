@@ -2,6 +2,7 @@ package com.labi.items;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -37,6 +38,12 @@ public class C4 {
 
         ItemMeta itemMeta = item.getItemMeta();
         return itemMeta.getCustomModelData() == ITEM_UUID.hashCode();
+    }
+
+    public static boolean isC4Block(Block block) {
+        if (block == null) return false;
+
+        return block.hasMetadata(String.valueOf(getItemUUID()));
     }
 
     public static UUID getItemUUID() {

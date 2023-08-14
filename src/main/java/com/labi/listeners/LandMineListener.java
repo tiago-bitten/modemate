@@ -43,8 +43,9 @@ public class LandMineListener implements Listener {
 
         Player player = event.getPlayer();
 
-        ItemStack itemInHand = player.getInventory().getItemInMainHand();
-        if (!isLandMineItem(itemInHand)) return;
+        ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
+        ItemStack itemInOffHand = player.getInventory().getItemInOffHand();
+        if (!isLandMineItem(itemInMainHand) && !isLandMineItem(itemInOffHand)) return;
 
         if (cooldownMap.isOnCooldown(player)) {
             player.sendMessage(cooldownMap.getMsgCooldown(player, "s to place again!"));
