@@ -24,6 +24,7 @@ public class HungerListener implements Listener {
 
     @EventHandler
     public void onHungerChange(FoodLevelChangeEvent event) {
+        if (!modemateCommand.isEnable()) return;
         if (hungerCommand.isHungerEnable()) return;
 
         Entity entity = event.getEntity();
