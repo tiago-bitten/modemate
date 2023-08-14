@@ -2,6 +2,7 @@ package com.labi.listeners;
 
 import com.labi.commands.ModemateCommand;
 import com.labi.utils.CooldownMap;
+import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +21,7 @@ public class C4Listener implements Listener {
 
     private CooldownMap<Player> cooldownMap = new CooldownMap<>();
     private static final Long C4_COOLDOWN = 5000L;
+    private static boolean isC4Placed = false;
     private static JavaPlugin modemate;
     private static ModemateCommand modemateCommand;
 
@@ -38,9 +40,24 @@ public class C4Listener implements Listener {
         ItemStack itemInOffHand = player.getInventory().getItemInOffHand();
         if (!isC4Item(itemInMainHand) && !isC4Item(itemInOffHand)) return;
 
+        if (cooldownMap.isOnCooldown(player)) {
+            player.sendMessage(cooldownMap.getMsgCooldown(player, "s to place again!"));
+            event.setCancelled(true);
+            return;
+        }
+
+        if (isC4Placed) {
+            player.sendMessage(ChatColor.YELLOW + "You can only place one C4 at a time!");
+            event.setCancelled(true);
+            return;
+        }
+
         Block c4Block = event.getBlockPlaced();
 
         c4Block.setMetadata(String.valueOf(getItemUUID()), new FixedMetadataValue(modemate, true));
+
+        cooldownMap.setCooldown(player, C4_COOLDOWN);
+        isC4Placed = true;
     }
 
     @EventHandler
@@ -56,5 +73,6 @@ public class C4Listener implements Listener {
         Player player = event.getPlayer();
 
         explodeC4(block, player);
+        isC4Placed = false;
     }
 }
