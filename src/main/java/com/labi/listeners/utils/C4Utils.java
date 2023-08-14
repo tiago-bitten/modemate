@@ -18,13 +18,19 @@ public class C4Utils {
 
     private static Block c4;
 
-    public static void explodeC4(Player player) {
-        startCountdown(player);
+    public static void explodeC4(Player player, boolean cooldown) {
+        if (cooldown) {
+            startCountdown(player);
 
-        Bukkit.getScheduler().runTaskLater(MODEMATE, () -> {
-            c4.getWorld().createExplosion(c4.getLocation(), 4.0F, true, true, player);
+            Bukkit.getScheduler().runTaskLater(MODEMATE, () -> {
+                c4.getWorld().createExplosion(c4.getLocation(), 4.0F, true, true, player);
+                c4 = null;
+            }, C4_COOLDOWN_SECONDS * 20L);
+        }
+        else {
+            c4.getWorld().createExplosion(c4.getLocation(), 4.0F, true, true);
             c4 = null;
-        }, C4_COOLDOWN_SECONDS * 20L);
+        }
     }
 
     private static void startCountdown(Player player) {

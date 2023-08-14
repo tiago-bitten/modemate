@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -73,11 +74,6 @@ public class C4Listener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!isC4Placed) {
-            player.sendMessage(ChatColor.YELLOW + "You must place a C4 first!");
-            return;
-        }
-
         boolean action = event.getAction().equals(Action.RIGHT_CLICK_AIR);
         if (!action) return;
 
@@ -86,12 +82,31 @@ public class C4Listener implements Listener {
 
         if (!isDetonatorC4Item(itemInMainHand) && !isDetonatorC4Item(itemInOffHand)) return;
 
-        explodeC4(player);
+        if (!isC4Placed) {
+            player.sendMessage(ChatColor.YELLOW + "You must place a C4 first!");
+            return;
+        }
+
+        explodeC4(player, true);
+        isC4Placed = false;
+    }
+
+    @EventHandler
+    public void onBreakC4(BlockBreakEvent event) {
+        if (!modemateCommand.isEnable()) return;
+
+        Block block = event.getBlock();
+
+        if (!block.hasMetadata(String.valueOf(getItemUUID()))) return;
+
+        explodeC4(null, false);
         isC4Placed = false;
     }
 
     @EventHandler
     public void onPlaceDetonator(BlockPlaceEvent event) {
+        if (!modemateCommand.isEnable()) return;
+
         ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
 
         if (!isDetonatorC4Item(itemInMainHand)) return;
@@ -107,7 +122,7 @@ public class C4Listener implements Listener {
             return;
         }
 
-        explodeC4(player);
+        explodeC4(player, true);
         isC4Placed = false;
     }
 }
