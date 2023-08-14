@@ -1,5 +1,6 @@
 package com.labi.listeners;
 
+import com.labi.commands.ModemateCommand;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -17,9 +18,11 @@ import static com.labi.items.LandMine.*;
 public class LandMineListener implements Listener {
 
     private JavaPlugin modemate;
+    private ModemateCommand modemateCommand;
 
-    public LandMineListener(JavaPlugin modemate) {
+    public LandMineListener(JavaPlugin modemate, ModemateCommand modemateCommand) {
         this.modemate = modemate;
+        this.modemateCommand = modemateCommand;
     }
 
     @EventHandler

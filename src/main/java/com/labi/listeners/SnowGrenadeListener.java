@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import static com.labi.items.SnowGrenade.isSnowGrenadeThrow;
 import static com.labi.listeners.utils.SnowGrenadeUtils.*;
@@ -25,9 +26,11 @@ public class SnowGrenadeListener implements Listener {
     private final Long SNOW_GRENADE_COOLDOWN = 2000L;
     private static boolean isSnowGrenade = false;
 
+    private final JavaPlugin modemate;
     private final ModemateCommand modemateCommand;
 
-    public SnowGrenadeListener(ModemateCommand modemateCommand) {
+    public SnowGrenadeListener(JavaPlugin modemate, ModemateCommand modemateCommand) {
+        this.modemate = modemate;
         this.modemateCommand = modemateCommand;
     }
 

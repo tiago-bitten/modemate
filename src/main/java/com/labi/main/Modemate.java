@@ -10,6 +10,7 @@ import com.labi.listeners.FlyListener;
 import com.labi.listeners.HungerListener;
 import com.labi.listeners.LandMineListener;
 import com.labi.listeners.SnowGrenadeListener;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Modemate extends JavaPlugin {
@@ -43,10 +44,10 @@ public final class Modemate extends JavaPlugin {
         getCommand(hungerCommand.getCommandName()).setExecutor(hungerCommand);
 
         /* Listeners */
-        getServer().getPluginManager().registerEvents(new SnowGrenadeListener(modemateCommand), instance);
-        getServer().getPluginManager().registerEvents(new HungerListener(hungerCommand), instance);
-        getServer().getPluginManager().registerEvents(new FlyListener(modemateCommand), instance);
-        getServer().getPluginManager().registerEvents(new LandMineListener(instance), instance);
+        getServer().getPluginManager().registerEvents(new SnowGrenadeListener(instance, modemateCommand), instance);
+        getServer().getPluginManager().registerEvents(new HungerListener(instance, modemateCommand, hungerCommand), instance);
+        getServer().getPluginManager().registerEvents(new FlyListener(instance, modemateCommand), instance);
+        getServer().getPluginManager().registerEvents(new LandMineListener(instance, modemateCommand), instance);
 
         /* Crafts */
         SnowGrenadeCraft snowGrenadeCraft = new SnowGrenadeCraft();
