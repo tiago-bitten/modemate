@@ -1,5 +1,6 @@
 package com.labi.listeners.utils;
 
+import com.labi.listeners.utils.enums.C4State;
 import com.labi.main.Modemate;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -13,13 +14,13 @@ public class C4Utils {
     private static final int C4_COOLDOWN_SECONDS = 5;
     private static final Float C4_EXPLOSION_POWER = 5.0F;
     private boolean timerStarted = false;
-    private boolean isC4Placed = false;
-    private boolean isC4Activated = false;
+    private C4State c4State = C4State.NOT_PLACED;
 
     private Block c4;
 
     public void explodeC4(Player player, boolean cooldown) {
-        isC4Activated = true;
+        setC4Activated(true);
+
         if (cooldown) {
             startCountdown(player);
 
@@ -29,15 +30,15 @@ public class C4Utils {
                 applyParticleEffect(c4.getLocation(), Particle.FLAME, 50, 0);
                 c4.setType(Material.AIR);
                 c4 = null;
-                isC4Placed = false;
-                isC4Activated = false;
+                setC4Placed(false);
+                setC4Activated(false);
             }, C4_COOLDOWN_SECONDS * 20L);
-        }
-        else {
+        } else {
             c4.getWorld().createExplosion(c4.getLocation(), C4_EXPLOSION_POWER, true, true);
+            c4.setType(Material.AIR);
             c4 = null;
-            isC4Placed = false;
-            isC4Activated = false;
+            setC4Placed(false);
+            setC4Activated(false);
         }
     }
 
@@ -69,17 +70,6 @@ public class C4Utils {
         location.getWorld().spawnParticle(particle, location.getX() + 0.5, location.getY() + 1.15, location.getZ() + 0.5, amount, 0, 0, 0, speed);
     }
 
-    public boolean checkC4Placed(Player player, String msg) {
-        if (isC4Placed) {
-            player.sendMessage(ChatColor.YELLOW + msg);
-            return true;
-        }
-        if (msg != null) {
-            player.sendMessage(ChatColor.YELLOW + msg);
-        }
-        return false;
-    }
-
     public Block getC4() {
         return c4;
     }
@@ -88,19 +78,21 @@ public class C4Utils {
         this.c4 = c4;
     }
 
-    public boolean getC4Placed() {
-        return isC4Placed;
+    public void setC4Placed(boolean placed) {
+        c4State = placed ? C4State.PLACED : C4State.NOT_PLACED;
     }
 
-    public void setC4Placed(boolean c4Placed) {
-        this.isC4Placed = c4Placed;
+    public boolean isC4Placed() {
+        return c4State == C4State.PLACED;
     }
 
-    public boolean getC4Activated() {
-        return isC4Activated;
+    public void setC4Activated(boolean activated) {
+        if (c4State == C4State.PLACED) {
+            c4State = activated ? C4State.ACTIVATED : C4State.PLACED;
+        }
     }
 
-    public void setC4Activated(boolean c4Activated) {
-        this.isC4Activated = c4Activated;
+    public boolean isC4Activated() {
+        return c4State == C4State.ACTIVATED;
     }
 }

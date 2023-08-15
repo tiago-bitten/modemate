@@ -23,7 +23,7 @@ import static com.labi.items.DetonatorC4.isDetonatorC4Item;
 
 public class C4Listener implements Listener {
 
-    private C4Utils c4Utils = new C4Utils();
+    private C4Utils utils = new C4Utils();
     private CooldownMap<Player> cooldownMap = new CooldownMap<>();
     private static final Long C4_COOLDOWN = 2000L;
 
@@ -45,28 +45,21 @@ public class C4Listener implements Listener {
         ItemStack itemInOffHand = player.getInventory().getItemInOffHand();
         if (!isC4Item(itemInMainHand) && !isC4Item(itemInOffHand)) return;
 
+        if (utils.isC4Placed() || utils.isC4Activated()) {
+            player.sendMessage(ChatColor.YELLOW + "You can't place another C4!");
+            event.setCancelled(true);
+            return;
+        }
+
         if (cooldownMap.isOnCooldown(player)) {
             player.sendMessage(cooldownMap.getMsgCooldown(player, "s to place again!"));
-            event.setCancelled(true);
             return;
         }
 
-        if (c4Utils.getC4Placed()) {
-            player.sendMessage(ChatColor.YELLOW + "You can only place one C4 at a time!");
-            event.setCancelled(true);
-            return;
-        }
+        utils.setC4(event.getBlockPlaced());
+        utils.getC4().setMetadata(String.valueOf(getItemUUID()), new FixedMetadataValue(modemate, true));
 
-        if (c4Utils.getC4Activated()) {
-            player.sendMessage(ChatColor.YELLOW + "You can't place a C4 while it's activated!");
-            event.setCancelled(true);
-            return;
-        }
-
-        c4Utils.setC4(event.getBlockPlaced());
-        c4Utils.getC4().setMetadata(String.valueOf(getItemUUID()), new FixedMetadataValue(modemate, true));
-
-        c4Utils.setC4Placed(true);
+        utils.setC4Placed(true);
         cooldownMap.setCooldown(player, C4_COOLDOWN);
     }
 
@@ -84,12 +77,12 @@ public class C4Listener implements Listener {
 
         if (!isDetonatorC4Item(itemInMainHand) && !isDetonatorC4Item(itemInOffHand)) return;
 
-        if (!c4Utils.getC4Placed()) {
+        if (!utils.isC4Placed()) {
             player.sendMessage(ChatColor.YELLOW + "You must place a C4 first!");
             return;
         }
 
-        c4Utils.explodeC4(player, true);
+        utils.explodeC4(player, true);
     }
 
     @EventHandler
@@ -100,13 +93,12 @@ public class C4Listener implements Listener {
 
         if (!block.hasMetadata(String.valueOf(getItemUUID()))) return;
 
-        if (c4Utils.getC4Activated()) {
+        if (utils.isC4Activated()) {
             event.setCancelled(true);
             return;
         }
 
-        c4Utils.explodeC4(null, false);
-        c4Utils.setC4Placed(false);
+        utils.explodeC4(null, false);
     }
 
     @EventHandler
@@ -123,12 +115,16 @@ public class C4Listener implements Listener {
         block.setType(Material.AIR);
         event.setCancelled(true);
 
-        if (!c4Utils.getC4Placed()) {
+        if (utils.isC4Activated()) {
+            player.sendMessage(ChatColor.YELLOW + "C4 is already activated!");
+            return;
+        }
+
+        if (!utils.isC4Placed()) {
             player.sendMessage(ChatColor.YELLOW + "You must place a C4 first!");
             return;
         }
 
-        c4Utils.explodeC4(player, true);
-        c4Utils.setC4Placed(false);
+        utils.explodeC4(player, true);
     }
 }
