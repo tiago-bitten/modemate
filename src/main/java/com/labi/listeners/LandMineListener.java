@@ -1,9 +1,9 @@
 package com.labi.listeners;
 
 import com.labi.commands.ModemateCommand;
+import com.labi.listeners.utils.LandMineUtils;
 import com.labi.utils.CooldownMap;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,18 +15,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import static com.labi.items.LandMine.*;
-import static com.labi.listeners.utils.LandMineUtils.checkRadius;
-import static com.labi.listeners.utils.LandMineUtils.explodeLandMine;
 
 public class LandMineListener implements Listener {
 
-    private final Set<Location> placedBlocksLocations = new HashSet<>();
+    private LandMineUtils utils = new LandMineUtils();
     private final CooldownMap<Player> cooldownMap = new CooldownMap<>();
-    private static final long LANDMINE_COOLWDOWN = 7000L;
+    private static final long LANDMINE_COOLWDOWN = 2000L;
 
 
     private JavaPlugin modemate;
@@ -53,19 +48,18 @@ public class LandMineListener implements Listener {
             return;
         }
 
-        Location blockLocation = event.getBlockPlaced().getLocation();
+        Block block = event.getBlock();
 
-        if (!checkRadius(blockLocation, placedBlocksLocations)) {
+        if (!utils.checkRadius(block)) {
             player.sendMessage(ChatColor.RED + "There is a landmine nearby!");
             event.setCancelled(true);
             return;
         }
 
-        Block block = event.getBlockPlaced();
         block.setMetadata(getItemName(), new FixedMetadataValue(modemate, true));
 
         cooldownMap.setCooldown(player, LANDMINE_COOLWDOWN);
-        placedBlocksLocations.add(blockLocation);
+        utils.addBlockLocation(block);
     }
 
     @EventHandler
@@ -80,11 +74,8 @@ public class LandMineListener implements Listener {
 
         Player player = event.getPlayer();
 
-        explodeLandMine(block, player);
-
-        Location blockLocation = block.getLocation();
-        placedBlocksLocations.remove(blockLocation);
-
+        utils.explodeLandMine(block, player);
+        utils.removeBlockLocation(block);
         event.setCancelled(true);
     }
 }
