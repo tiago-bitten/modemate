@@ -24,8 +24,7 @@ import static com.labi.items.DetonatorC4.isDetonatorC4Item;
 public class C4Listener implements Listener {
 
     private C4Utils utils = new C4Utils();
-    private CooldownMap<Player> cooldownMap = new CooldownMap<>();
-    private static final Long C4_COOLDOWN = 2000L;
+    private CooldownMap<Player> cooldownMap = new CooldownMap<>(7000L);
 
     private static JavaPlugin modemate;
     private static ModemateCommand modemateCommand;
@@ -53,6 +52,7 @@ public class C4Listener implements Listener {
 
         if (cooldownMap.isOnCooldown(player)) {
             player.sendMessage(cooldownMap.getMsgCooldown(player, "s to place again!"));
+            event.setCancelled(true);
             return;
         }
 
@@ -60,7 +60,7 @@ public class C4Listener implements Listener {
         utils.getC4().setMetadata(String.valueOf(getItemUUID()), new FixedMetadataValue(modemate, true));
 
         utils.setC4Placed(true);
-        cooldownMap.setCooldown(player, C4_COOLDOWN);
+        cooldownMap.setCooldown(player);
     }
 
     @EventHandler

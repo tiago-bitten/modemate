@@ -8,13 +8,18 @@ import java.util.Map;
 public class CooldownMap<T> {
 
     private final Map<T, Long> cooldownMap = new HashMap<>();
+    private Long cooldownTime;
+
+    public CooldownMap(Long cooldownTime) {
+        this.cooldownTime = cooldownTime;
+    }
 
     public boolean isOnCooldown(T key) {
         return cooldownMap.containsKey(key) && cooldownMap.get(key) > System.currentTimeMillis();
     }
 
-    public void setCooldown(T key, long delay) {
-        cooldownMap.put(key, System.currentTimeMillis() + delay);
+    public void setCooldown(T key) {
+        cooldownMap.put(key, System.currentTimeMillis() + cooldownTime);
     }
 
     public void removeCooldown(T key) {

@@ -23,9 +23,7 @@ import static com.labi.items.LandMine.*;
 public class LandMineListener implements Listener {
 
     private LandMineUtils utils = new LandMineUtils();
-    private final CooldownMap<Player> cooldownMap = new CooldownMap<>();
-    private static final long LANDMINE_COOLWDOWN = 2000L;
-
+    private final CooldownMap<Player> cooldownMap = new CooldownMap<>(15000L);
 
     private JavaPlugin modemate;
     private ModemateCommand modemateCommand;
@@ -61,7 +59,7 @@ public class LandMineListener implements Listener {
 
         block.setMetadata(String.valueOf(LandMine.getItemUUID()), new FixedMetadataValue(modemate, true));
 
-        cooldownMap.setCooldown(player, LANDMINE_COOLWDOWN);
+        cooldownMap.setCooldown(player);
         utils.addBlockLocation(block);
     }
 
