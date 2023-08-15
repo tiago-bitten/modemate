@@ -44,7 +44,7 @@ public class LandMine {
     public static boolean isLandMineBlock(Block block) {
         if (block == null) return false;
 
-        return block.hasMetadata(getItemName());
+        return block.hasMetadata(String.valueOf(getItemUUID()));
     }
 
     public static UUID getItemUUID() {

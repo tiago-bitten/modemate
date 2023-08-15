@@ -1,6 +1,7 @@
 package com.labi.listeners;
 
 import com.labi.commands.ModemateCommand;
+import com.labi.items.LandMine;
 import com.labi.listeners.utils.LandMineUtils;
 import com.labi.utils.CooldownMap;
 import org.bukkit.Bukkit;
@@ -9,13 +10,13 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.List;
 
 import static com.labi.items.LandMine.*;
 
@@ -58,7 +59,7 @@ public class LandMineListener implements Listener {
             return;
         }
 
-        block.setMetadata(getItemName(), new FixedMetadataValue(modemate, true));
+        block.setMetadata(String.valueOf(LandMine.getItemUUID()), new FixedMetadataValue(modemate, true));
 
         cooldownMap.setCooldown(player, LANDMINE_COOLWDOWN);
         utils.addBlockLocation(block);
@@ -89,5 +90,17 @@ public class LandMineListener implements Listener {
         if (!isLandMineBlock(block)) return;
 
         utils.removeBlockLocation(block);
+    }
+
+    @EventHandler
+    public void onBreakLandMineByExplosion(BlockExplodeEvent event) {
+        if (!modemateCommand.isEnable()) return;
+
+        List<Block> blocks = event.blockList();
+        for (Block block : blocks) {
+            if (!isLandMineBlock(block)) continue;
+
+            utils.removeBlockLocation(block);
+        }
     }
 }

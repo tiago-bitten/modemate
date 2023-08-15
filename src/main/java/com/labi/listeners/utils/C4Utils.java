@@ -25,7 +25,7 @@ public class C4Utils {
             startCountdown(player);
 
             Bukkit.getScheduler().runTaskLater(MODEMATE, () -> {
-                c4.getWorld().createExplosion(c4.getLocation(), C4_EXPLOSION_POWER, true, true, player);
+                c4.getWorld().createExplosion(c4.getLocation(), C4_EXPLOSION_POWER, true, true);
                 applyParticleEffect(c4.getLocation(), Particle.FLASH, 50, 5);
                 applyParticleEffect(c4.getLocation(), Particle.FLAME, 50, 0);
                 c4.setType(Material.AIR);
