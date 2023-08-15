@@ -7,56 +7,61 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.labi.main.Modemate.getInstance;
 
 public class C4Utils {
 
     private static final Modemate MODEMATE = getInstance();
-    private static final Float C4_EXPLOSION_POWER = 5.0F;
-    private boolean timerStarted = false;
+    private static final float C4_EXPLOSION_POWER = 5.0F;
+    private static final int DELAY_SECONDS = 5;
+
+    private Block c4Block = null;
     private C4State c4State = C4State.NOT_ACTIVATED;
-    private List<Block> c4 = new ArrayList<>();
-    private int delay = 5; // seconds to explode
+    private boolean timerStarted = false;
 
     public void explodeWithDelay(Player player) {
-        startCount(player);
-
-        Bukkit.getScheduler().runTaskLater(MODEMATE, () -> {
-            createExplosion(getC4());
-            removeC4(getC4());
-        }, delay * 20L);
-    }
-
-    public void explodeWithoutDelay() {
-        createExplosion(getC4());
-        removeC4(getC4());
-    }
-
-    private void createExplosion(Block block) {
-        block.getWorld().createExplosion(block.getLocation(), C4_EXPLOSION_POWER, true, true);
-        applyParticleEffect(block.getLocation(), Particle.FLASH, 50, 5);
-        applyParticleEffect(block.getLocation(), Particle.FLAME, 50, 0);
-        block.setType(Material.AIR);
-    }
-
-    private void startCount(Player player) {
         if (timerStarted) return;
         timerStarted = true;
 
+        startCount(player);
+
+        Bukkit.getScheduler().runTaskLater(MODEMATE, () -> {
+            createExplosion(c4Block);
+        }, DELAY_SECONDS * 20L);
+    }
+
+    public void explodeWithoutDelay() {
+        createExplosion(c4Block);
+    }
+
+    private void createExplosion(Block block) {
+        if (block == null) return;
+
+        Location blockLocation = block.getLocation();
+        World world = blockLocation.getWorld();
+
+        if (world == null) return;
+
+        world.createExplosion(blockLocation, C4_EXPLOSION_POWER, true, true);
+        applyParticleEffect(blockLocation, Particle.FLASH, 50, 5);
+        applyParticleEffect(blockLocation, Particle.FLAME, 50, 0);
+
+        block.setType(Material.AIR);
+        removeC4();
+    }
+
+    private void startCount(Player player) {
         new BukkitRunnable() {
-            int count = delay;
+            int count = DELAY_SECONDS;
+
             @Override
             public void run() {
                 if (count > 0) {
                     player.sendMessage(ChatColor.RED + "C4 will explode in " + ChatColor.YELLOW + count + ChatColor.RED + " seconds!");
-                    playSound(c4.get(0).getLocation());
-                    applyParticleEffect(c4.get(0).getLocation(), Particle.FLAME, 1, 0);
+                    playSound(c4Block.getLocation());
+                    applyParticleEffect(c4Block.getLocation(), Particle.FLAME, 1, 0);
                     count--;
-                }
-                else {
+                } else {
                     player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "C4 exploded!");
                     timerStarted = false;
                     cancel();
@@ -66,27 +71,29 @@ public class C4Utils {
     }
 
     private void playSound(Location location) {
+        if (location == null) return;
         location.getWorld().playSound(location, Sound.ITEM_LODESTONE_COMPASS_LOCK, 1.0F, 0.5F);
     }
 
     private void applyParticleEffect(Location location, Particle particle, int amount, int speed) {
+        if (location == null) return;
         location.getWorld().spawnParticle(particle, location.getX() + 0.5, location.getY() + 1.15, location.getZ() + 0.5, amount, 0, 0, 0, speed);
     }
 
-    public Block getC4() {
-        return c4.get(0);
-    }
-
     public void addC4(Block block) {
-        c4.add(block);
+        c4Block = block;
     }
 
-    public void removeC4(Block block) {
-        c4.remove(block);
+    public Block getC4() {
+        return c4Block;
+    }
+
+    public void removeC4() {
+        c4Block = null;
     }
 
     public boolean isC4Placed() {
-        return c4.size() == 1;
+        return c4Block != null;
     }
 
     public boolean getC4State() {
@@ -94,10 +101,6 @@ public class C4Utils {
     }
 
     public void setC4State(boolean state) {
-        if (state) {
-            c4State = C4State.ACTIVATED;
-            return;
-        }
-        c4State = C4State.NOT_ACTIVATED;
+        c4State = state ? C4State.ACTIVATED : C4State.NOT_ACTIVATED;
     }
 }

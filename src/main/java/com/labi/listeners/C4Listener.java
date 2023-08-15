@@ -17,17 +17,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static com.labi.items.C4.getItemUUID;
-import static com.labi.items.C4.isC4Item;
+import static com.labi.items.C4.*;
 import static com.labi.items.DetonatorC4.isDetonatorC4Item;
 
 public class C4Listener implements Listener {
 
-    private C4Utils utils = new C4Utils();
-    private CooldownMap<Player> cooldownMap = new CooldownMap<>(15000L);
+    private final C4Utils utils = new C4Utils();
+    private final CooldownMap<Player> cooldownMap = new CooldownMap<>(15000L);
 
-    private static JavaPlugin modemate;
-    private static ModemateCommand modemateCommand;
+    private final JavaPlugin modemate;
+    private final ModemateCommand modemateCommand;
 
     public C4Listener(JavaPlugin modemate, ModemateCommand modemateCommand) {
         this.modemate = modemate;
@@ -39,10 +38,10 @@ public class C4Listener implements Listener {
         if (!modemateCommand.isEnable()) return;
 
         Player player = event.getPlayer();
+        ItemStack mainHandItem = player.getInventory().getItemInMainHand();
+        ItemStack offHandItem = player.getInventory().getItemInOffHand();
 
-        ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-        ItemStack itemInOffHand = player.getInventory().getItemInOffHand();
-        if (!isC4Item(itemInMainHand) && !isC4Item(itemInOffHand)) return;
+        if (!isC4Item(mainHandItem) && !isC4Item(offHandItem)) return;
 
         if (utils.isC4Placed() || utils.getC4State()) {
             player.sendMessage(ChatColor.YELLOW + "You can't place another C4!");
@@ -57,7 +56,8 @@ public class C4Listener implements Listener {
         }
 
         utils.addC4(event.getBlockPlaced());
-        utils.getC4().setMetadata(String.valueOf(getItemUUID()), new FixedMetadataValue(modemate, true));
+        Block c4Block = utils.getC4();
+        c4Block.setMetadata(String.valueOf(getItemUUID()), new FixedMetadataValue(modemate, true));
 
         cooldownMap.setCooldown(player);
     }
@@ -67,14 +67,16 @@ public class C4Listener implements Listener {
         if (!modemateCommand.isEnable()) return;
 
         Player player = event.getPlayer();
+        Action action = event.getAction();
 
-        boolean action = event.getAction().equals(Action.RIGHT_CLICK_AIR);
-        if (!action) return;
+        if (action != Action.RIGHT_CLICK_AIR) return;
 
-        ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
-        ItemStack itemInOffHand = event.getPlayer().getInventory().getItemInOffHand();
+        ItemStack mainHandItem = player.getInventory().getItemInMainHand();
+        ItemStack offHandItem = player.getInventory().getItemInOffHand();
 
-        if (!isDetonatorC4Item(itemInMainHand) && !isDetonatorC4Item(itemInOffHand)) return;
+        if (!isDetonatorC4Item(mainHandItem) && !isDetonatorC4Item(offHandItem)) {
+            return;
+        }
 
         if (!utils.isC4Placed()) {
             player.sendMessage(ChatColor.YELLOW + "You must place a C4 first!");
@@ -90,7 +92,7 @@ public class C4Listener implements Listener {
 
         Block block = event.getBlock();
 
-        if (!block.hasMetadata(String.valueOf(getItemUUID()))) return;
+        if (!isC4Block(block)) return;
 
         if (utils.getC4State()) {
             event.setCancelled(true);
@@ -104,26 +106,29 @@ public class C4Listener implements Listener {
     public void onPlaceDetonator(BlockPlaceEvent event) {
         if (!modemateCommand.isEnable()) return;
 
-        ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
+        ItemStack mainHandItem = event.getPlayer().getInventory().getItemInMainHand();
 
-        if (!isDetonatorC4Item(itemInMainHand)) return;
+        if (!isDetonatorC4Item(mainHandItem)) return;
 
         Player player = event.getPlayer();
-
         Block block = event.getBlockPlaced();
-        block.setType(Material.AIR);
-        event.setCancelled(true);
 
         if (utils.getC4State()) {
             player.sendMessage(ChatColor.YELLOW + "C4 is already activated!");
+            block.setType(Material.AIR);
+            event.setCancelled(true);
             return;
         }
 
         if (!utils.isC4Placed()) {
             player.sendMessage(ChatColor.YELLOW + "You must place a C4 first!");
+            block.setType(Material.AIR);
+            event.setCancelled(true);
             return;
         }
 
         utils.explodeWithDelay(player);
+        block.setType(Material.AIR);
+        event.setCancelled(true);
     }
 }
