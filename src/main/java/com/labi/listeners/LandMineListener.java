@@ -3,12 +3,14 @@ package com.labi.listeners;
 import com.labi.commands.ModemateCommand;
 import com.labi.listeners.utils.LandMineUtils;
 import com.labi.utils.CooldownMap;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -77,5 +79,15 @@ public class LandMineListener implements Listener {
         utils.explodeLandMine(block, player);
         utils.removeBlockLocation(block);
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBreakLandMine(BlockBreakEvent event) {
+        if (!modemateCommand.isEnable()) return;
+
+        Block block = event.getBlock();
+        if (!isLandMineBlock(block)) return;
+
+        utils.removeBlockLocation(block);
     }
 }
