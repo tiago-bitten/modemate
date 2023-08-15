@@ -24,7 +24,7 @@ import static com.labi.items.DetonatorC4.isDetonatorC4Item;
 public class C4Listener implements Listener {
 
     private C4Utils utils = new C4Utils();
-    private CooldownMap<Player> cooldownMap = new CooldownMap<>(7000L);
+    private CooldownMap<Player> cooldownMap = new CooldownMap<>(15000L);
 
     private static JavaPlugin modemate;
     private static ModemateCommand modemateCommand;
@@ -44,7 +44,7 @@ public class C4Listener implements Listener {
         ItemStack itemInOffHand = player.getInventory().getItemInOffHand();
         if (!isC4Item(itemInMainHand) && !isC4Item(itemInOffHand)) return;
 
-        if (utils.isC4Placed() || utils.isC4Activated()) {
+        if (utils.isC4Placed() || utils.getC4State()) {
             player.sendMessage(ChatColor.YELLOW + "You can't place another C4!");
             event.setCancelled(true);
             return;
@@ -56,10 +56,9 @@ public class C4Listener implements Listener {
             return;
         }
 
-        utils.setC4(event.getBlockPlaced());
+        utils.addC4(event.getBlockPlaced());
         utils.getC4().setMetadata(String.valueOf(getItemUUID()), new FixedMetadataValue(modemate, true));
 
-        utils.setC4Placed(true);
         cooldownMap.setCooldown(player);
     }
 
@@ -82,7 +81,7 @@ public class C4Listener implements Listener {
             return;
         }
 
-        utils.explodeC4(player, true);
+        utils.explodeWithDelay(player);
     }
 
     @EventHandler
@@ -93,12 +92,12 @@ public class C4Listener implements Listener {
 
         if (!block.hasMetadata(String.valueOf(getItemUUID()))) return;
 
-        if (utils.isC4Activated()) {
+        if (utils.getC4State()) {
             event.setCancelled(true);
             return;
         }
 
-        utils.explodeC4(null, false);
+        utils.explodeWithoutDelay();
     }
 
     @EventHandler
@@ -115,7 +114,7 @@ public class C4Listener implements Listener {
         block.setType(Material.AIR);
         event.setCancelled(true);
 
-        if (utils.isC4Activated()) {
+        if (utils.getC4State()) {
             player.sendMessage(ChatColor.YELLOW + "C4 is already activated!");
             return;
         }
@@ -125,6 +124,6 @@ public class C4Listener implements Listener {
             return;
         }
 
-        utils.explodeC4(player, true);
+        utils.explodeWithDelay(player);
     }
 }
