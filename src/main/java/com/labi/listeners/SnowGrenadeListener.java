@@ -23,9 +23,9 @@ import static com.labi.listeners.utils.SnowGrenadeUtils.*;
 
 public class SnowGrenadeListener implements Listener {
 
+    private final SnowGrenadeUtils utils = new SnowGrenadeUtils();
     private final CooldownMap<Player> cooldownMap = new CooldownMap<>();
     private static final Long SNOW_GRENADE_COOLDOWN = 2000L;
-    private static boolean isSnowGrenade = false;
 
     private final JavaPlugin modemate;
     private final ModemateCommand modemateCommand;
@@ -52,18 +52,18 @@ public class SnowGrenadeListener implements Listener {
             return;
         }
 
-        updateVelocity(projectile);
-        createParticleTrail(projectile, Particle.SNOWBALL, 1, 2);
-        createParticleTrail(projectile, Particle.SMOKE_NORMAL, 1, 7);
+        utils.updateVelocity(projectile);
+        utils.createParticleTrail(projectile, Particle.SNOWBALL, 1, 2);
+        utils.createParticleTrail(projectile, Particle.SMOKE_NORMAL, 1, 7);
 
-        isSnowGrenade = true;
+        utils.setSnowGrenadeState(true);
         cooldownMap.setCooldown(player, SNOW_GRENADE_COOLDOWN);
     }
 
     @EventHandler
     public void onSnowGrenadeHit(ProjectileHitEvent event) {
         if (!modemateCommand.isEnable()) return;
-        if (!isSnowGrenade) return;
+        if (!utils.isSnowGrenade()) return;
 
         Projectile projectile = event.getEntity();
 
@@ -73,8 +73,8 @@ public class SnowGrenadeListener implements Listener {
 
         Player player = (Player) projectile.getShooter();
 
-        explodeSnowGrenade(projectile, player);
-        isSnowGrenade = false;
+        utils.explodeSnowGrenade(projectile, player);
+        utils.setSnowGrenadeState(false);
     }
 
     @EventHandler

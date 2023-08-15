@@ -1,5 +1,6 @@
 package com.labi.listeners.utils;
 
+import com.labi.listeners.utils.enums.SnowGrenadeState;
 import com.labi.main.Modemate;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
@@ -19,13 +20,15 @@ public class SnowGrenadeUtils {
     private static final double VECTOR_MULTIPLY_Y = 0.4;
     private static final double VECTOR_MULTIPLY_Z = 0.4;
 
+    private SnowGrenadeState snowGrenadeState = SnowGrenadeState.IS_NOT_SNOW_GRENADE;
+
     /* **************** */
     /* END OF VARIABLES */
     /* **************** */
 
     /* event -> Snowball Hit */
 
-    public static void explodeSnowGrenade(Projectile projectile, Player reference) {
+    public void explodeSnowGrenade(Projectile projectile, Player reference) {
         final float explosion = randomExplosion();
         final boolean isBigExplosion = explosion > BIG_EXPLOSION;
 
@@ -35,12 +38,12 @@ public class SnowGrenadeUtils {
         projectile.remove();
     }
 
-    private static Float randomExplosion() {
+    private Float randomExplosion() {
         return (float) (Math.random() * (MAX_EXPLOSION - MIN_EXPLOSION) + MIN_EXPLOSION);
     }
     /* event -> Snowball Throw */
 
-    public static void updateVelocity(Projectile projectile) {
+    public void updateVelocity(Projectile projectile) {
         Vector currentVelocity = projectile.getVelocity();
         Vector adjustedVelocity = new Vector(
                 currentVelocity.getX() * VECTOR_MULTIPLY_X,
@@ -50,15 +53,26 @@ public class SnowGrenadeUtils {
         projectile.setVelocity(adjustedVelocity);
     }
 
-    public static void createParticleTrail(Projectile projectile, Particle particle, int amount, int ticks) {
+    public void createParticleTrail(Projectile projectile, Particle particle, int amount, int ticks) {
         Bukkit.getScheduler().runTaskTimer(Modemate.getInstance(), () -> {
             if (!projectile.isValid()) return;
             applyParticles(projectile, particle, amount);
         }, 1, ticks);
     }
 
-    private static void applyParticles(Projectile projectile, Particle particle, int amount) {
+    private void applyParticles(Projectile projectile, Particle particle, int amount) {
         projectile.getWorld().spawnParticle(particle, projectile.getLocation(), amount, 0, 0, 0, 0);
     }
 
+    public boolean isSnowGrenade() {
+        return snowGrenadeState == SnowGrenadeState.IS_SNOW_GRENADE;
+    }
+
+    public void setSnowGrenadeState(boolean state) {
+        if (state) {
+            snowGrenadeState = SnowGrenadeState.IS_SNOW_GRENADE;
+            return;
+        }
+        snowGrenadeState = SnowGrenadeState.IS_NOT_SNOW_GRENADE;
+    }
 }
