@@ -10,14 +10,16 @@ import static com.labi.main.Modemate.getInstance;
 public class C4Utils {
 
     private static final Modemate MODEMATE = getInstance();
-    private static final int C4_COOLDOWN_SECONDS = 6;
+    private static final int C4_COOLDOWN_SECONDS = 5;
     private static final Float C4_EXPLOSION_POWER = 5.0F;
     private boolean timerStarted = false;
     private boolean isC4Placed = false;
+    private boolean isC4Activated = false;
 
     private Block c4;
 
     public void explodeC4(Player player, boolean cooldown) {
+        isC4Activated = true;
         if (cooldown) {
             startCountdown(player);
 
@@ -25,13 +27,17 @@ public class C4Utils {
                 c4.getWorld().createExplosion(c4.getLocation(), C4_EXPLOSION_POWER, true, true, player);
                 applyParticleEffect(c4.getLocation(), Particle.FLASH, 50, 5);
                 applyParticleEffect(c4.getLocation(), Particle.FLAME, 50, 0);
+                c4.setType(Material.AIR);
                 c4 = null;
                 isC4Placed = false;
+                isC4Activated = false;
             }, C4_COOLDOWN_SECONDS * 20L);
         }
         else {
             c4.getWorld().createExplosion(c4.getLocation(), C4_EXPLOSION_POWER, true, true);
             c4 = null;
+            isC4Placed = false;
+            isC4Activated = false;
         }
     }
 
@@ -56,7 +62,7 @@ public class C4Utils {
     }
 
     private void playC4Sound(Location location) {
-        location.getWorld().playSound(location, Sound.ITEM_LODESTONE_COMPASS_LOCK, 1.0F, 1.0F);
+        location.getWorld().playSound(location, Sound.ITEM_LODESTONE_COMPASS_LOCK, 1.0F, 0.5F);
     }
 
     private void applyParticleEffect(Location location, Particle particle, int amount, int speed) {
@@ -88,5 +94,13 @@ public class C4Utils {
 
     public void setC4Placed(boolean c4Placed) {
         this.isC4Placed = c4Placed;
+    }
+
+    public boolean getC4Activated() {
+        return isC4Activated;
+    }
+
+    public void setC4Activated(boolean c4Activated) {
+        this.isC4Activated = c4Activated;
     }
 }

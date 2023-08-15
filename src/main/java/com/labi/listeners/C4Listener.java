@@ -25,7 +25,7 @@ public class C4Listener implements Listener {
 
     private C4Utils c4Utils = new C4Utils();
     private CooldownMap<Player> cooldownMap = new CooldownMap<>();
-    private static final Long C4_COOLDOWN = 15000L;
+    private static final Long C4_COOLDOWN = 2000L;
 
     private static JavaPlugin modemate;
     private static ModemateCommand modemateCommand;
@@ -57,11 +57,17 @@ public class C4Listener implements Listener {
             return;
         }
 
+        if (c4Utils.getC4Activated()) {
+            player.sendMessage(ChatColor.YELLOW + "You can't place a C4 while it's activated!");
+            event.setCancelled(true);
+            return;
+        }
+
         c4Utils.setC4(event.getBlockPlaced());
         c4Utils.getC4().setMetadata(String.valueOf(getItemUUID()), new FixedMetadataValue(modemate, true));
 
-        cooldownMap.setCooldown(player, C4_COOLDOWN);
         c4Utils.setC4Placed(true);
+        cooldownMap.setCooldown(player, C4_COOLDOWN);
     }
 
     @EventHandler
@@ -93,6 +99,11 @@ public class C4Listener implements Listener {
         Block block = event.getBlock();
 
         if (!block.hasMetadata(String.valueOf(getItemUUID()))) return;
+
+        if (c4Utils.getC4Activated()) {
+            event.setCancelled(true);
+            return;
+        }
 
         c4Utils.explodeC4(null, false);
         c4Utils.setC4Placed(false);
