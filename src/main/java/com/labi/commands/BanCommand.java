@@ -3,19 +3,25 @@ package com.labi.commands;
 import com.labi.permissions.PermissionsEnum;
 import org.bukkit.BanList;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.sql.Date;
-import java.time.Instant;
+import javax.swing.text.DateFormatter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.bukkit.Bukkit.getServer;
 
 public class BanCommand extends DefaultImpCommand implements CommandExecutor, TabCompleter {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public BanCommand(String commandName, PermissionsEnum permission) {
         super(commandName, permission);
@@ -30,32 +36,58 @@ public class BanCommand extends DefaultImpCommand implements CommandExecutor, Ta
             return true;
         }
 
-        StringBuilder banReason = new StringBuilder();
+        Player target = getServer().getPlayer(strings[0]);
+        StringBuilder reason = new StringBuilder();
 
         for (int i = 1; i < strings.length; i++) {
-            banReason.append(ChatColor.RED + strings[i] + " ");
+            reason.append(ChatColor.RED + strings[i] + " ");
         }
-
-        System.out.println(banReason);
-
-        Player target = getServer().getPlayer(strings[0]);
+        reason.append(
+                "\n" + ChatColor.WHITE + "Date: " + ChatColor.RED + LocalDate.now().format(formatter) +
+                "\n" + ChatColor.WHITE + "Author: " + ChatColor.RED + commandSender.getName() +
+                "\n" + ChatColor.WHITE + "Duration: " + ChatColor.RED + "Permanent"
+        );
 
         if (target == null) {
             commandSender.sendMessage(ChatColor.RED + "Player not found!");
             return true;
         }
 
-        getServer().getBanList(BanList.Type.PROFILE).addBan(target.getName(), banReason.toString(), null, commandSender.getName());
-
-        target.kickPlayer(ChatColor.RED + "You have been banned from this server!");
-
+        beforeBan(target, reason.toString(), commandSender);
 
         return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+        if (strings.length > 1) {
+            return List.of("hacking", "spamming", "griefing", "toxicity");
+        }
         return null;
+    }
+
+    private void beforeBan(Player player, String reason, CommandSender author) {
+        new BukkitRunnable() {
+            int delay = 3;
+            @Override
+            public void run() {
+                if (delay > 0) {
+                    player.setGameMode(GameMode.SPECTATOR);
+                    player.setAllowFlight(false);
+                    player.setFlying(false);
+                    player.sendTitle(ChatColor.RED + "You'll be banned in " + ChatColor.WHITE + delay, ChatColor.RED + "Reason: " + reason, 5, 20, 5);
+                    delay--;
+                } else {
+                    ban(player, reason, author);
+                    cancel();
+                }
+            }
+        }.runTaskTimer(getServer().getPluginManager().getPlugin("modemate"), 0, 20);
+    }
+
+    private void ban(Player player, String reason, CommandSender author) {
+        getServer().getBanList(BanList.Type.NAME).addBan(player.getName(), reason, null, author.getName());
+        player.kickPlayer(ChatColor.WHITE + "" + ChatColor.BOLD + "You have been banned!");
     }
 
     @Override
