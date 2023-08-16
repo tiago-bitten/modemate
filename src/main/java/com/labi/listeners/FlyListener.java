@@ -1,6 +1,7 @@
 package com.labi.listeners;
 
 import com.labi.commands.ModemateCommand;
+import com.labi.permissions.PermissionsEnum;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,26 +19,21 @@ public class FlyListener implements Listener {
         this.modemateCommand = modemateCommand;
     }
 
-    private static final String OPERATOR_PERMISSION = "server.op";
-    private boolean isNotFlying = false;
+    private PermissionsEnum permissionsEnum;
+    private boolean hasAppliedSpeed = false;
+
     @EventHandler
     public void onPlayerFly(PlayerMoveEvent event) {
         if (!modemateCommand.isEnable()) return;
 
         Player player = event.getPlayer();
 
-        if (!player.isFlying()) {
-            player.setFlySpeed(0.1f);
-            isNotFlying = true;
-            return;
-        }
+        if (!player.hasPermission(permissionsEnum.OPERATOR.getPermission())) return;
         if (player.getGameMode() != GameMode.CREATIVE) return;
-        if (!player.hasPermission(OPERATOR_PERMISSION)) return;
-        if (!player.isSprinting()) return;
+        if (!player.isFlying()) return;
+        if (hasAppliedSpeed) return;
 
-        if (isNotFlying) {
-            player.setFlySpeed(0.2f);
-            isNotFlying = false;
-        }
+        player.setFlySpeed(0.2f);
+        hasAppliedSpeed = true;
     }
 }
