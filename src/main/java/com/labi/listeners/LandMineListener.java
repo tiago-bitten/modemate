@@ -23,7 +23,7 @@ import static com.labi.items.LandMine.*;
 public class LandMineListener implements Listener {
 
     private LandMineUtils utils = new LandMineUtils();
-    private final CooldownMap<Player> cooldownMap = new CooldownMap<>(15000L);
+    private CooldownMap<Player> cooldownMap = new CooldownMap<>(15000L);
 
     private JavaPlugin modemate;
     private ModemateCommand modemateCommand;

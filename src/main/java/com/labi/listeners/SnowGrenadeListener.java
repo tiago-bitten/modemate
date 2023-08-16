@@ -19,7 +19,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import static com.labi.items.SnowGrenade.isSnowGrenadeThrow;
-import static com.labi.listeners.utils.SnowGrenadeUtils.*;
 
 public class SnowGrenadeListener implements Listener {
 

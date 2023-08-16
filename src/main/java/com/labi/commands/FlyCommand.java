@@ -22,8 +22,8 @@ public class FlyCommand extends DefaultImpCommand implements CommandExecutor, Ta
 
         Player player = (Player) commandSender;
 
-        if (player.getGameMode() == GameMode.CREATIVE) {
-            player.sendMessage(ChatColor.RED + "You can't use this command in creative mode!");
+        if (player.getGameMode() != GameMode.SURVIVAL) {
+            player.sendMessage(ChatColor.RED + "you cant only use this command in survival mode!");
             return true;
         }
 

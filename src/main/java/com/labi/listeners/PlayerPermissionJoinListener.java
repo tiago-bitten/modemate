@@ -12,8 +12,8 @@ public class PlayerPermissionJoinListener implements Listener {
 
     private PermissionsEnum permissionsEnum;
 
-    private JavaPlugin modemate;
-    private ModemateCommand modemateCommand;
+    private final JavaPlugin modemate;
+    private final ModemateCommand modemateCommand;
 
     public PlayerPermissionJoinListener(JavaPlugin modemate, ModemateCommand modemateCommand) {
         this.modemate = modemate;

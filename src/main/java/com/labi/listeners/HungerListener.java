@@ -12,9 +12,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class HungerListener implements Listener {
 
-    private JavaPlugin modemate;
-    private ModemateCommand modemateCommand;
-    private HungerCommand hungerCommand;
+    private final JavaPlugin modemate;
+    private final ModemateCommand modemateCommand;
+    private final HungerCommand hungerCommand;
 
     public HungerListener(JavaPlugin modemate, ModemateCommand modemateCommand, HungerCommand hungerCommand) {
         this.modemate = modemate;
