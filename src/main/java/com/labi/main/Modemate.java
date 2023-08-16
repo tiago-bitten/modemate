@@ -48,6 +48,7 @@ public final class Modemate extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new FlyListener(instance, modemateCommand), instance);
         getServer().getPluginManager().registerEvents(new LandMineListener(instance, modemateCommand), instance);
         getServer().getPluginManager().registerEvents(new C4Listener(instance, modemateCommand), instance);
+        getServer().getPluginManager().registerEvents(new OperatorPlayerJoinServer(instance, modemateCommand), instance);
 
         /* Crafts */
         SnowGrenadeCraft snowGrenadeCraft = new SnowGrenadeCraft();
