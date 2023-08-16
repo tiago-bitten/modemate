@@ -17,8 +17,6 @@ public class HungerCommand extends DefaultImpCommand implements CommandExecutor,
         super(commandName, permissionsEnum);
     }
 
-    private static boolean isHungerEnable = true;
-
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (!defaultCheck(commandSender, command)) return true;
@@ -35,21 +33,21 @@ public class HungerCommand extends DefaultImpCommand implements CommandExecutor,
             String arg = strings[0];
 
             if (arg.equalsIgnoreCase("enable")) {
-                if (isHungerEnable) {
+                if (getState()) {
                     player.sendMessage(ChatColor.YELLOW + "hunger is already enabled!");
                 }
                 else {
-                    isHungerEnable = true;
+                    setState(true);
                     player.sendMessage(ChatColor.GREEN + "hunger has been enabled!");
                 }
                 return true;
             }
             if (arg.equalsIgnoreCase("disable")) {
-                if (!isHungerEnable) {
+                if (!getState()) {
                     player.sendMessage(ChatColor.YELLOW + "hunger is already disabled!");
                 }
                 else {
-                    isHungerEnable = false;
+                    setState(false);
                     player.setFoodLevel(20);
                     player.sendMessage(ChatColor.RED + "hunger has been disabled!");
                 }
@@ -58,7 +56,7 @@ public class HungerCommand extends DefaultImpCommand implements CommandExecutor,
         }
 
         if (strings.length == 3) {
-            if (!isHungerEnable) {
+            if (!getState()) {
                 player.sendMessage(ChatColor.RED + "hunger is disabled!");
                 return true;
             }
@@ -118,9 +116,5 @@ public class HungerCommand extends DefaultImpCommand implements CommandExecutor,
         }
 
         return null;
-    }
-
-    public boolean isHungerEnable() {
-        return isHungerEnable;
     }
 }
