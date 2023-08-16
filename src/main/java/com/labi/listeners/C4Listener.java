@@ -11,11 +11,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.List;
 
 import static com.labi.items.C4.*;
 import static com.labi.items.DetonatorC4.isDetonatorC4Item;
@@ -130,5 +133,10 @@ public class C4Listener implements Listener {
         utils.explodeWithDelay(player);
         block.setType(Material.AIR);
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBreakC4ByExplosion(BlockExplodeEvent event) {
+        // TODO: create a event to remove c4 if it's destroyed by explosion
     }
 }
