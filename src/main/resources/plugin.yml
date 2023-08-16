@@ -28,3 +28,6 @@ commands:
     mgmd:
         description: Allows the player to manipulate the player's gamemode
         usage: /mgmd <args>
+    mban:
+        description: Allows the player to ban a player
+        usage: /mban <args>
