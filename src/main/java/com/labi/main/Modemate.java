@@ -1,9 +1,6 @@
 package com.labi.main;
 
-import com.labi.commands.HungerCommand;
-import com.labi.commands.ModemateCommand;
-import com.labi.commands.TimeCommand;
-import com.labi.commands.WeatherCommand;
+import com.labi.commands.*;
 import com.labi.crafts.C4Craft;
 import com.labi.crafts.DetonatorC4Craft;
 import com.labi.crafts.LandMineCraft;
@@ -20,6 +17,7 @@ public final class Modemate extends JavaPlugin {
     private HungerCommand hungerCommand;
     private TimeCommand timeCommand;
     private WeatherCommand weatherCommand;
+    private FlyCommand flyCommand;
 
     @Override
     public void onEnable() {
@@ -30,17 +28,20 @@ public final class Modemate extends JavaPlugin {
 
         /* Main command */
         modemateCommand = new ModemateCommand("mplugin", "server.op");
-        getCommand(modemateCommand.getCommandName()).setExecutor(modemateCommand);
+        getCommand(modemateCommand.COMMAND_NAME).setExecutor(modemateCommand);
 
         /* Commands */
         timeCommand = new TimeCommand("mtime", "server.op");
-        getCommand(timeCommand.getCommandName()).setExecutor(timeCommand);
+        getCommand(timeCommand.COMMAND_NAME).setExecutor(timeCommand);
 
         weatherCommand = new WeatherCommand("mweather", "server.op");
-        getCommand(weatherCommand.getCommandName()).setExecutor(weatherCommand);
+        getCommand(weatherCommand.COMMAND_NAME).setExecutor(weatherCommand);
 
         hungerCommand = new HungerCommand("mhunger", "server.op");
-        getCommand(hungerCommand.getCommandName()).setExecutor(hungerCommand);
+        getCommand(hungerCommand.COMMAND_NAME).setExecutor(hungerCommand);
+
+        flyCommand = new FlyCommand("mfly", "server.op");
+        getCommand(flyCommand.COMMAND_NAME).setExecutor(flyCommand);
 
         /* Listeners */
         getServer().getPluginManager().registerEvents(new SnowGrenadeListener(instance, modemateCommand), instance);

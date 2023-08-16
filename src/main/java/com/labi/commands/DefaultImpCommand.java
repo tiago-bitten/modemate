@@ -5,19 +5,37 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+
 public abstract class DefaultImpCommand {
 
-    protected final String COMMAND_NAME;
-    protected final String OPERATOR_PERMISSION;
+    private enum State {
+        ENABLE,
+        DISABLE
+    }
 
-    DefaultImpCommand(String commandName, String operatorPermission) {
+    public final String COMMAND_NAME;
+    public final String OPERATOR_PERMISSION;
+    public State state;
+
+
+    public DefaultImpCommand(String commandName, String operatorPermission) {
         this.COMMAND_NAME = commandName;
         this.OPERATOR_PERMISSION = operatorPermission;
+        this.state = state.DISABLE;
     }
 
-    public String getCommandName() {
-        return COMMAND_NAME;
+    public boolean getState() {
+        return state == state.ENABLE;
     }
+
+    public void setState(boolean flag) {
+        if (flag) {
+            state = state.ENABLE;
+            return;
+        }
+        state = state.DISABLE;
+    }
+
 
     protected Boolean defaultCheck(CommandSender commandSender, Command command) {
         if (!(commandSender instanceof Player)) {

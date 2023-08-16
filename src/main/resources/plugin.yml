@@ -22,3 +22,6 @@ commands:
     mhunger:
         description: Allows the player to manipulate the player's hunger
         usage: /mhunger <args>
+    mfly:
+        description: Allows the player to manipulate the player's fly
+        usage: /mfly

@@ -73,19 +73,19 @@ public class HungerCommand extends DefaultImpCommand implements CommandExecutor,
                 if (actionArg.equalsIgnoreCase("set")) {
                     if (amountArg.equalsIgnoreCase("max")) {
                         target.setFoodLevel(20);
-                        player.sendMessage(ChatColor.GREEN + "You have set " + target.getName() + "'s hunger to max!");
+                        player.sendMessage(ChatColor.YELLOW + "You have set " + target.getName() + "'s hunger to max!");
                         return true;
                     }
 
                     if (amountArg.equalsIgnoreCase("half")) {
                         target.setFoodLevel(10);
-                        player.sendMessage(ChatColor.GREEN + "You have set " + target.getName() + "'s hunger to half!");
+                        player.sendMessage(ChatColor.YELLOW + "You have set " + target.getName() + "'s hunger to half!");
                         return true;
                     }
 
                     if (amountArg.equalsIgnoreCase("min")) {
                         target.setFoodLevel(0);
-                        player.sendMessage(ChatColor.GREEN + "You have set " + target.getName() + "'s hunger to zero!");
+                        player.sendMessage(ChatColor.YELLOW + "You have set " + target.getName() + "'s hunger to zero!");
                         return true;
                     }
 
