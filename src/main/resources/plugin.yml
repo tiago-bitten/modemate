@@ -25,3 +25,6 @@ commands:
     mfly:
         description: Allows the player to manipulate the player's fly
         usage: /mfly
+    mgmd:
+        description: Allows the player to manipulate the player's gamemode
+        usage: /mgmd <args>

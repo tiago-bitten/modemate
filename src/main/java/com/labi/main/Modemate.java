@@ -6,6 +6,7 @@ import com.labi.crafts.DetonatorC4Craft;
 import com.labi.crafts.LandMineCraft;
 import com.labi.crafts.SnowGrenadeCraft;
 import com.labi.listeners.*;
+import com.labi.permissions.PermissionsEnum;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,6 +19,7 @@ public final class Modemate extends JavaPlugin {
     private TimeCommand timeCommand;
     private WeatherCommand weatherCommand;
     private FlyCommand flyCommand;
+    private GamemodeCommand gamemodeCommand;
 
     @Override
     public void onEnable() {
@@ -27,21 +29,24 @@ public final class Modemate extends JavaPlugin {
         getLogger().info("\u001B[32m" + "modemate has been enabled!" + "\u001B[0m");
 
         /* Main command */
-        modemateCommand = new ModemateCommand("mplugin", "server.op");
+        modemateCommand = new ModemateCommand("mplugin", PermissionsEnum.OPERATOR);
         getCommand(modemateCommand.COMMAND_NAME).setExecutor(modemateCommand);
 
         /* Commands */
-        timeCommand = new TimeCommand("mtime", "server.op");
+        timeCommand = new TimeCommand("mtime", PermissionsEnum.OPERATOR);
         getCommand(timeCommand.COMMAND_NAME).setExecutor(timeCommand);
 
-        weatherCommand = new WeatherCommand("mweather", "server.op");
+        weatherCommand = new WeatherCommand("mweather", PermissionsEnum.OPERATOR);
         getCommand(weatherCommand.COMMAND_NAME).setExecutor(weatherCommand);
 
-        hungerCommand = new HungerCommand("mhunger", "server.op");
+        hungerCommand = new HungerCommand("mhunger", PermissionsEnum.OPERATOR);
         getCommand(hungerCommand.COMMAND_NAME).setExecutor(hungerCommand);
 
-        flyCommand = new FlyCommand("mfly", "server.op");
+        flyCommand = new FlyCommand("mfly", PermissionsEnum.OPERATOR);
         getCommand(flyCommand.COMMAND_NAME).setExecutor(flyCommand);
+
+        gamemodeCommand = new GamemodeCommand("mgmd", PermissionsEnum.OPERATOR);
+        getCommand(gamemodeCommand.COMMAND_NAME).setExecutor(gamemodeCommand);
 
         /* Listeners */
         getServer().getPluginManager().registerEvents(new SnowGrenadeListener(instance, modemateCommand), instance);

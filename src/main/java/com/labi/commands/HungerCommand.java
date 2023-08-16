@@ -1,5 +1,6 @@
 package com.labi.commands;
 
+import com.labi.permissions.PermissionsEnum;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -12,15 +13,14 @@ import java.util.List;
 
 public class HungerCommand extends DefaultImpCommand implements CommandExecutor, TabCompleter {
 
-    public HungerCommand(String commandName, String operatorPermission) {
-        super(commandName, operatorPermission);
+    public HungerCommand(String commandName, PermissionsEnum permissionsEnum) {
+        super(commandName, permissionsEnum);
     }
 
     private static boolean isHungerEnable = true;
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-
         if (!defaultCheck(commandSender, command)) return true;
 
         Player player = (Player) commandSender;

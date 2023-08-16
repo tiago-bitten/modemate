@@ -1,5 +1,6 @@
 package com.labi.commands;
 
+import com.labi.permissions.PermissionsEnum;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,8 +13,8 @@ import java.util.List;
 public class TimeCommand extends DefaultImpCommand implements CommandExecutor, TabCompleter {
 
 
-    public TimeCommand(String commandName, String operatorPermission) {
-        super(commandName, operatorPermission);
+    public TimeCommand(String commandName, PermissionsEnum permissionsEnum) {
+        super(commandName, permissionsEnum);
     }
     private static final int SUNRISE = 0;
     private static final int MORNING = 1000;
@@ -26,7 +27,6 @@ public class TimeCommand extends DefaultImpCommand implements CommandExecutor, T
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-
         if (!defaultCheck(commandSender, command)) return true;
 
         Player player = (Player) commandSender;

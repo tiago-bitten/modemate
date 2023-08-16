@@ -1,18 +1,20 @@
 package com.labi.commands;
 
+import com.labi.permissions.PermissionsEnum;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.messaging.PluginMessageRecipient;
 
 import java.util.List;
 
 public class ModemateCommand extends DefaultImpCommand implements CommandExecutor, TabCompleter {
 
-    public ModemateCommand(String commandName, String operatorPermission) {
-        super(commandName, operatorPermission);
+    public ModemateCommand(String commandName, PermissionsEnum permissionsEnum) {
+        super(commandName, permissionsEnum);
     }
 
     private static boolean isEnable = true;

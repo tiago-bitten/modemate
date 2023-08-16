@@ -1,9 +1,12 @@
 package com.labi.commands;
 
+import com.labi.permissions.PermissionsEnum;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 
 public abstract class DefaultImpCommand {
@@ -14,13 +17,13 @@ public abstract class DefaultImpCommand {
     }
 
     public final String COMMAND_NAME;
-    public final String OPERATOR_PERMISSION;
+    public final PermissionsEnum PERMISSIONS;
     public State state;
 
 
-    public DefaultImpCommand(String commandName, String operatorPermission) {
+    public DefaultImpCommand(String commandName, PermissionsEnum permission) {
         this.COMMAND_NAME = commandName;
-        this.OPERATOR_PERMISSION = operatorPermission;
+        this.PERMISSIONS = permission;
         this.state = state.DISABLE;
     }
 
@@ -44,7 +47,7 @@ public abstract class DefaultImpCommand {
         }
 
         Player player = (Player) commandSender;
-        if (!player.hasPermission(OPERATOR_PERMISSION)) {
+        if (!player.hasPermission(PERMISSIONS.getPermission())) {
             player.sendMessage(ChatColor.DARK_RED + "You don't have permission!");
             return false;
         }

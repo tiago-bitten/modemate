@@ -20,7 +20,6 @@ public class FlyListener implements Listener {
     }
 
     private PermissionsEnum permissionsEnum;
-    private boolean hasAppliedSpeed = false;
 
     @EventHandler
     public void onPlayerFly(PlayerMoveEvent event) {
@@ -31,9 +30,7 @@ public class FlyListener implements Listener {
         if (!player.hasPermission(permissionsEnum.OPERATOR.getPermission())) return;
         if (player.getGameMode() != GameMode.CREATIVE) return;
         if (!player.isFlying()) return;
-        if (hasAppliedSpeed) return;
 
         player.setFlySpeed(0.2f);
-        hasAppliedSpeed = true;
     }
 }

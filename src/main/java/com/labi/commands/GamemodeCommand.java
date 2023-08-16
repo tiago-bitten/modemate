@@ -11,11 +11,10 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class FlyCommand extends DefaultImpCommand implements CommandExecutor, TabCompleter {
-    public FlyCommand(String commandName, PermissionsEnum permissionsEnum) {
+public class GamemodeCommand extends DefaultImpCommand implements CommandExecutor, TabCompleter {
+    public GamemodeCommand(String commandName, PermissionsEnum permissionsEnum) {
         super(commandName, permissionsEnum);
     }
-
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -23,25 +22,19 @@ public class FlyCommand extends DefaultImpCommand implements CommandExecutor, Ta
 
         Player player = (Player) commandSender;
 
-        if (player.getGameMode() != GameMode.SURVIVAL) {
-            player.sendMessage(ChatColor.RED + "you cant only use this command in survival mode!");
-            return true;
-        }
-
         if (getState()) {
             setState(false);
 
-            player.setAllowFlight(false);
-            player.setFlying(false);
-            player.sendMessage(ChatColor.RED + "You are no longer flying!");
+            player.setGameMode(GameMode.CREATIVE);
+            player.sendMessage(ChatColor.GREEN + "You are now in creative mode!");
+
             return true;
         }
 
         setState(true);
 
-        player.setAllowFlight(true);
-        player.setFlySpeed(0.1f);
-        player.sendMessage(ChatColor.GREEN + "You are now flying!");
+        player.setGameMode(GameMode.SURVIVAL);
+        player.sendMessage(ChatColor.GREEN + "You are now in survival mode!");
 
         return true;
     }
