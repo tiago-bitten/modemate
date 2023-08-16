@@ -20,7 +20,7 @@ public class SnowGrenadeUtils {
     private static final double VECTOR_MULTIPLY_Y = 0.4;
     private static final double VECTOR_MULTIPLY_Z = 0.4;
 
-    private SnowGrenadeState snowGrenadeState = SnowGrenadeState.IS_NOT_SNOW_GRENADE;
+    private SnowGrenadeState state = SnowGrenadeState.NOT_ACTIVATED;
 
     /* **************** */
     /* END OF VARIABLES */
@@ -36,6 +36,7 @@ public class SnowGrenadeUtils {
 
         projectile.getWorld().createExplosion(projectile.getLocation(), explosion, isBigExplosion, true, reference);
         projectile.remove();
+        setState(true);
     }
 
     private Float randomExplosion() {
@@ -64,15 +65,11 @@ public class SnowGrenadeUtils {
         projectile.getWorld().spawnParticle(particle, projectile.getLocation(), amount, 0, 0, 0, 0);
     }
 
-    public boolean isSnowGrenade() {
-        return snowGrenadeState == SnowGrenadeState.IS_SNOW_GRENADE;
+    public boolean getState() {
+        return state == SnowGrenadeState.ACTIVATED;
     }
 
-    public void setSnowGrenadeState(boolean state) {
-        if (state) {
-            snowGrenadeState = SnowGrenadeState.IS_SNOW_GRENADE;
-            return;
-        }
-        snowGrenadeState = SnowGrenadeState.IS_NOT_SNOW_GRENADE;
+    public void setState(boolean flag) {
+        state = flag ? SnowGrenadeState.ACTIVATED : SnowGrenadeState.NOT_ACTIVATED;
     }
 }

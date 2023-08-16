@@ -40,6 +40,12 @@ public class SnowGrenade {
         return itemMeta.getCustomModelData() == ITEM_UUID.hashCode();
     }
 
+    public static boolean isSnowGrenadeProjectile(Projectile projectile) {
+        if (projectile == null) return false;
+
+        return projectile.hasMetadata(String.valueOf(getItemUUID()));
+    }
+
     public static UUID getItemUUID() {
         return ITEM_UUID;
     }
