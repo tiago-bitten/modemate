@@ -6,28 +6,42 @@ api-version: '1.20'
 
 permissions:
   server.op:
-    description: Allows the player to switch between enable and disable
+    description: Operator permission
     default: op
+
+  server.admin:
+    description: Administrator permission
+    default: false
+
+  server.mod:
+    description: Moderator permission
+    default: false
 
 commands:
     mplugin:
         description: Main command
         usage: /mplugin <args>
+
     mtime:
       description: Allows the player to manipulate the world time
       usage: /mtime <args>
+
     mweather:
       description: Allows the player to manipulate the world weather
       usage: /mweather <args>
+
     mhunger:
         description: Allows the player to manipulate the player's hunger
         usage: /mhunger <args>
+
     mfly:
         description: Allows the player to manipulate the player's fly
         usage: /mfly
+
     mgmd:
         description: Allows the player to manipulate the player's gamemode
         usage: /mgmd <args>
+
     mban:
         description: Allows the player to ban a player
         usage: /mban <args>

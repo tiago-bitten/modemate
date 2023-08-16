@@ -53,6 +53,11 @@ public class BanCommand extends DefaultImpCommand implements CommandExecutor, Ta
             return true;
         }
 
+        if (commandSender.getName().equalsIgnoreCase(target.getName())) {
+            commandSender.sendMessage(ChatColor.RED + "You can't ban yourself!");
+            return true;
+        }
+
         beforeBan(target, reason.toString(), commandSender);
 
         return true;
