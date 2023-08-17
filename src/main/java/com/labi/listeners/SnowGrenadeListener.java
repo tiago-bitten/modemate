@@ -82,47 +82,4 @@ public class SnowGrenadeListener implements Listener {
 
         utils.explodeSnowGrenade(projectile, player);
     }
-
-    @EventHandler
-    public void onSnowGrenadeExplode(EntityExplodeEvent event) {
-        List<Entity> affectedEntities = event.getEntity().getNearbyEntities(3, 3, 3);
-
-        // TODO: FINISH THIS IMPLEMENTATION
-
-        for (Entity entity : affectedEntities) {
-            if (!(entity instanceof LivingEntity)) {
-                System.out.println("Not a living entity");
-                continue;
-            }
-
-            System.out.println("Living entity");
-
-            LivingEntity livingEntity = (LivingEntity) entity;
-            livingEntity.damage(3.0);
-            livingEntity.setFireTicks(60);
-        }
-    }
-
-
-/*    @EventHandler
-    public void onSnowGrenadeExplode(EntityDamageEvent event) {
-        if (!modemateCommand.isEnable()) return;
-
-        System.out.println(event.getCause());
-
-        boolean explosionCause = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION;
-        boolean projectileCause = event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE;
-
-        if (!explosionCause && !projectileCause) return;
-
-        if (!utils.getState()) return;
-
-        Entity entity = event.getEntity();
-        if (!(entity instanceof LivingEntity)) return;
-
-        LivingEntity livingEntity = (LivingEntity) entity;
-        livingEntity.damage(3.0);
-        livingEntity.setFireTicks(60);
-        utils.setState(false);
-    }*/
 }

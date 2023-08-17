@@ -4,6 +4,7 @@ import com.labi.listeners.utils.enums.SnowGrenadeState;
 import com.labi.main.Modemate;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.util.Vector;
@@ -20,7 +21,7 @@ public class SnowGrenadeUtils {
     private static final double VECTOR_MULTIPLY_Y = 0.4;
     private static final double VECTOR_MULTIPLY_Z = 0.4;
 
-    private SnowGrenadeState state = SnowGrenadeState.NOT_ACTIVATED;
+    // private SnowGrenadeState state = SnowGrenadeState.NOT_ACTIVATED;
 
     /* **************** */
     /* END OF VARIABLES */
@@ -35,8 +36,8 @@ public class SnowGrenadeUtils {
         if (!projectile.isValid()) return;
 
         projectile.getWorld().createExplosion(projectile.getLocation(), explosion, isBigExplosion, true, reference);
+        setDamageNearbyEntities(projectile, explosion + 0.5f);
         projectile.remove();
-        setState(true);
     }
 
     private Float randomExplosion() {
@@ -65,11 +66,22 @@ public class SnowGrenadeUtils {
         projectile.getWorld().spawnParticle(particle, projectile.getLocation(), amount, 0, 0, 0, 0);
     }
 
-    public boolean getState() {
+    private void setDamageNearbyEntities(Projectile projectile, float explosion) {
+        projectile.getWorld().getNearbyEntities(projectile.getLocation(), explosion, explosion, explosion).forEach(entity -> {
+            if (!(entity instanceof LivingEntity)) return;
+
+            LivingEntity livingEntity = (LivingEntity) entity;
+
+            livingEntity.damage(3.0);
+            livingEntity.setFireTicks(60);
+        });
+    }
+
+/*    public boolean getState() {
         return state == SnowGrenadeState.ACTIVATED;
     }
 
     public void setState(boolean flag) {
         state = flag ? SnowGrenadeState.ACTIVATED : SnowGrenadeState.NOT_ACTIVATED;
-    }
+    }*/
 }
