@@ -11,11 +11,11 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import static com.labi.main.Modemate.getInstance;
+import static com.labi.utils.ExplosionUtil.explode;
 
 public class C4Utils {
 
     private static final Modemate MODEMATE = getInstance();
-    private final ExplosionUtil explosion = new ExplosionUtil();
     private static final float EXPLOSION_RANGE = 5.0F;
     private static final float DAMAGE = 7.5F;
     private static final int DELAY_SECONDS = 5;
@@ -31,14 +31,14 @@ public class C4Utils {
         startCount(player);
 
         Bukkit.getScheduler().runTaskLater(MODEMATE, () -> {
-            explosion.explode(c4Block.getLocation(), EXPLOSION_RANGE, DAMAGE);
+            explode(c4Block.getLocation(), EXPLOSION_RANGE, DAMAGE);
             c4Block.setType(Material.AIR);
             removeC4();
         }, DELAY_SECONDS * 20L);
     }
 
     public void explodeWithoutDelay() {
-        explosion.explode(c4Block.getLocation(), EXPLOSION_RANGE, DAMAGE);
+        explode(c4Block.getLocation(), EXPLOSION_RANGE, DAMAGE);
         c4Block.setType(Material.AIR);
         removeC4();
     }

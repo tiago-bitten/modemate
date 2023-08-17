@@ -11,12 +11,12 @@ import java.util.Collection;
 
 public class ExplosionUtil {
 
-    public void explode(@NonNull Location location, float range, float damage) {
+    public static void explode(@NonNull Location location, float range, float damage) {
         createExplosion(location, range);
         setDamageNearbyEntities(location, range, damage);
     }
 
-    private void createExplosion(Location location, float range) {
+    private static void createExplosion(Location location, float range) {
         Collection<Entity> entities = location.getWorld().getNearbyEntities(location, range, range, range);
 
         entities.forEach(entity -> {
@@ -37,7 +37,7 @@ public class ExplosionUtil {
         });
     }
 
-    private void setDamageNearbyEntities(Location location, float range, float damage) {
+    private static void setDamageNearbyEntities(Location location, float range, float damage) {
         Collection<Entity> entities = location.getWorld().getNearbyEntities(location, range, range, range);
 
         entities.forEach(entity -> {
@@ -49,7 +49,7 @@ public class ExplosionUtil {
         });
     }
 
-    private void applyParticleEffect(Location location, Particle particle, int amount, int radius) {
+    private static void applyParticleEffect(Location location, Particle particle, int amount, int radius) {
         World world = location.getWorld();
         if (world == null) return;
 
