@@ -59,17 +59,6 @@ public class SnowGrenadeUtils {
         projectile.setVelocity(adjustedVelocity);
     }
 
-    public void createParticleTrail(Projectile projectile, Particle particle, int amount, int ticks) {
-        Bukkit.getScheduler().runTaskTimer(Modemate.getInstance(), () -> {
-            if (!projectile.isValid()) return;
-            applyParticles(projectile, particle, amount);
-        }, 1, ticks);
-    }
-
-    private void applyParticles(Projectile projectile, Particle particle, int amount) {
-        projectile.getWorld().spawnParticle(particle, projectile.getLocation(), amount, 0, 0, 0, 0);
-    }
-
     private void setDamageNearbyEntities(Projectile projectile, float explosion) {
         projectile.getWorld().getNearbyEntities(projectile.getLocation(), explosion, explosion, explosion).forEach(entity -> {
             if (entity instanceof LivingEntity) {
