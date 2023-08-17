@@ -4,13 +4,17 @@ import com.labi.commands.ModemateCommand;
 import com.labi.items.LandMine;
 import com.labi.listeners.utils.LandMineUtils;
 import com.labi.utils.CooldownMap;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.*;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -18,12 +22,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
-import static com.labi.items.LandMine.*;
+import static com.labi.items.LandMine.isLandMineBlock;
+import static com.labi.items.LandMine.isLandMineItem;
 
 public class LandMineListener implements Listener {
 
     private LandMineUtils utils = new LandMineUtils();
-    private CooldownMap<Player> cooldownMap = new CooldownMap<>(15000L);
+    private CooldownMap<Player> cooldownMap = new CooldownMap<>(2000L);
 
     private JavaPlugin modemate;
     private ModemateCommand modemateCommand;
@@ -64,7 +69,7 @@ public class LandMineListener implements Listener {
     }
 
     @EventHandler
-    public void onStepOnLandMine(PlayerInteractEvent event) {
+    public void onPlayerStepOnLandMine(PlayerInteractEvent event) {
         if (!modemateCommand.isEnable()) return;
 
         boolean action = event.getAction().equals(Action.PHYSICAL);
@@ -76,6 +81,20 @@ public class LandMineListener implements Listener {
         Player player = event.getPlayer();
 
         utils.explodeLandMine(block, player);
+        utils.removeBlockLocation(block);
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onEntityStepOnLandMine(EntityInteractEvent event) {
+        if (!modemateCommand.isEnable()) return;
+
+        Block block = event.getBlock();
+        if (!isLandMineBlock(block)) return;
+
+        LivingEntity livingEntity = (LivingEntity) event.getEntity();
+
+        utils.explodeLandMine(block, livingEntity);
         utils.removeBlockLocation(block);
         event.setCancelled(true);
     }

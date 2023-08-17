@@ -68,12 +68,11 @@ public class SnowGrenadeUtils {
 
     private void setDamageNearbyEntities(Projectile projectile, float explosion) {
         projectile.getWorld().getNearbyEntities(projectile.getLocation(), explosion, explosion, explosion).forEach(entity -> {
-            if (!(entity instanceof LivingEntity)) return;
-
-            LivingEntity livingEntity = (LivingEntity) entity;
-
-            livingEntity.damage(3.0);
-            livingEntity.setFireTicks(60);
+            if (entity instanceof LivingEntity) {
+                LivingEntity livingEntity = (LivingEntity) entity;
+                livingEntity.damage(8.5);
+                livingEntity.setFireTicks(60);
+            }
         });
     }
 
