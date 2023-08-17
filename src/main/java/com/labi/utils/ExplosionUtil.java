@@ -1,5 +1,7 @@
 package com.labi.utils;
 
+import com.labi.main.Modemate;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -9,11 +11,20 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Collection;
 
+import static com.labi.utils.ParticlesUtil.applyParticleEffect;
+
 public class ExplosionUtil {
 
-    public static void explode(@NonNull Location location, float range, float damage) {
+    public static void explodeInstantly(@NonNull Location location, float range, float damage) {
         createExplosion(location, range);
         setDamageNearbyEntities(location, range, damage);
+    }
+
+    public static void explodeAfter(@NonNull Location location, float range, float damage, long ticks) {
+        Bukkit.getScheduler().runTaskLater(Modemate.getInstance(), () -> {
+            createExplosion(location, range);
+            setDamageNearbyEntities(location, range, damage);
+        }, ticks);
     }
 
     private static void createExplosion(Location location, float range) {
@@ -27,7 +38,7 @@ public class ExplosionUtil {
         });
 
         location.getWorld().createExplosion(location, range, true, true);
-        applyParticleEffect(location, Particle.FLASH, 50, 5);
+        applyParticleEffect(location, Particle.FLASH, 50, 0, 0, 0, 0.5f);
 
         entities.forEach(entity -> {
             if (entity instanceof LivingEntity) {
@@ -47,12 +58,5 @@ public class ExplosionUtil {
                 livingEntity.setFireTicks(60);
             }
         });
-    }
-
-    private static void applyParticleEffect(Location location, Particle particle, int amount, int radius) {
-        World world = location.getWorld();
-        if (world == null) return;
-
-        world.spawnParticle(particle, location, amount, radius, radius, radius);
     }
 }
