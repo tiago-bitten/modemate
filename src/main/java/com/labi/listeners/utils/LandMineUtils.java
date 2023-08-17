@@ -15,7 +15,8 @@ import java.util.Set;
 public class LandMineUtils {
 
     private final Set<Location> placedBlocksLocations = new HashSet<>();
-    private static final float EXPLOSION_RANGE = 3f;
+    private static final float EXPLOSION_RANGE = 3.0f;
+    private static final float DAMAGE = 12.0f;
     private static final int RADIUS = 20;
 
     public void explodeLandMine(Block block, LivingEntity livingEntity) {
@@ -59,7 +60,7 @@ public class LandMineUtils {
         block.getWorld().getNearbyEntities(block.getLocation(), explosion, explosion, explosion).forEach(entity -> {
             if (entity instanceof LivingEntity) {
                 LivingEntity livingEntity = (LivingEntity) entity;
-                livingEntity.damage(5.0);
+                livingEntity.damage(DAMAGE);
                 livingEntity.setFireTicks(60);
             }
         });
