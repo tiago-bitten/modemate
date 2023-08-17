@@ -4,6 +4,7 @@ package com.labi.listeners;
 import com.labi.commands.ModemateCommand;
 import com.labi.listeners.utils.SnowGrenadeUtils;
 import com.labi.utils.CooldownMap;
+import com.labi.utils.ParticlesUtil;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -48,9 +49,11 @@ public class SnowGrenadeListener implements Listener {
             return;
         }
 
+
+
         utils.updateVelocity(projectile);
-        utils.createParticleTrail(projectile, Particle.SNOWBALL, 1, 2);
-        utils.createParticleTrail(projectile, Particle.SMOKE_NORMAL, 1, 7);
+        ParticlesUtil.createParticleTrailEffect(projectile, Particle.SNOWBALL, 1, 0, 0, 0, 0, 1L);
+        ParticlesUtil.createParticleTrailEffect(projectile, Particle.SMOKE_NORMAL, 1, 0, 0, 0, 0, 7L);
 
         utils.applyMetaData(projectile);
 
