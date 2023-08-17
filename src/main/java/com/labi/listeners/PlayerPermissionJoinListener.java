@@ -12,11 +12,9 @@ public class PlayerPermissionJoinListener implements Listener {
 
     private PermissionsEnum permissionsEnum;
 
-    private final JavaPlugin modemate;
     private final ModemateCommand modemateCommand;
 
-    public PlayerPermissionJoinListener(JavaPlugin modemate, ModemateCommand modemateCommand) {
-        this.modemate = modemate;
+    public PlayerPermissionJoinListener(ModemateCommand modemateCommand) {
         this.modemateCommand = modemateCommand;
     }
     @EventHandler

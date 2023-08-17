@@ -30,11 +30,9 @@ public class LandMineListener implements Listener {
     private LandMineUtils utils = new LandMineUtils();
     private CooldownMap<Player> cooldownMap = new CooldownMap<>(2000L);
 
-    private JavaPlugin modemate;
     private ModemateCommand modemateCommand;
 
-    public LandMineListener(JavaPlugin modemate, ModemateCommand modemateCommand) {
-        this.modemate = modemate;
+    public LandMineListener(ModemateCommand modemateCommand) {
         this.modemateCommand = modemateCommand;
     }
 
@@ -62,7 +60,7 @@ public class LandMineListener implements Listener {
             return;
         }
 
-        block.setMetadata(String.valueOf(LandMine.getItemUUID()), new FixedMetadataValue(modemate, true));
+        utils.applyMetaData(block);
 
         cooldownMap.setCooldown(player);
         utils.addBlockLocation(block);

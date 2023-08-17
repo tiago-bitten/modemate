@@ -16,9 +16,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.List;
 
 import static com.labi.items.C4.*;
 import static com.labi.items.DetonatorC4.isDetonatorC4Item;
@@ -28,11 +25,9 @@ public class C4Listener implements Listener {
     private final C4Utils utils = new C4Utils();
     private final CooldownMap<Player> cooldownMap = new CooldownMap<>(15000L);
 
-    private final JavaPlugin modemate;
     private final ModemateCommand modemateCommand;
 
-    public C4Listener(JavaPlugin modemate, ModemateCommand modemateCommand) {
-        this.modemate = modemate;
+    public C4Listener(ModemateCommand modemateCommand) {
         this.modemateCommand = modemateCommand;
     }
 
@@ -60,7 +55,7 @@ public class C4Listener implements Listener {
 
         utils.addC4(event.getBlockPlaced());
         Block c4Block = utils.getC4();
-        c4Block.setMetadata(String.valueOf(getItemUUID()), new FixedMetadataValue(modemate, true));
+        utils.applyMetaData(c4Block);
 
         cooldownMap.setCooldown(player);
     }

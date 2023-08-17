@@ -53,12 +53,12 @@ public final class Modemate extends JavaPlugin {
         getCommand(banCommand.COMMAND_NAME).setExecutor(banCommand);
 
         /* Listeners */
-        getServer().getPluginManager().registerEvents(new SnowGrenadeListener(instance, modemateCommand), instance);
-        getServer().getPluginManager().registerEvents(new HungerListener(instance, modemateCommand, hungerCommand), instance);
-        getServer().getPluginManager().registerEvents(new FlyListener(instance, modemateCommand), instance);
-        getServer().getPluginManager().registerEvents(new LandMineListener(instance, modemateCommand), instance);
-        getServer().getPluginManager().registerEvents(new C4Listener(instance, modemateCommand), instance);
-        getServer().getPluginManager().registerEvents(new PlayerPermissionJoinListener(instance, modemateCommand), instance);
+        getServer().getPluginManager().registerEvents(new SnowGrenadeListener(modemateCommand), instance);
+        getServer().getPluginManager().registerEvents(new HungerListener(modemateCommand, hungerCommand), instance);
+        getServer().getPluginManager().registerEvents(new FlyListener(modemateCommand), instance);
+        getServer().getPluginManager().registerEvents(new LandMineListener(modemateCommand), instance);
+        getServer().getPluginManager().registerEvents(new C4Listener(modemateCommand), instance);
+        getServer().getPluginManager().registerEvents(new PlayerPermissionJoinListener(modemateCommand), instance);
 
         /* Crafts */
         SnowGrenadeCraft snowGrenadeCraft = new SnowGrenadeCraft();

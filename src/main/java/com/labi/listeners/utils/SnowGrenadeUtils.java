@@ -1,5 +1,6 @@
 package com.labi.listeners.utils;
 
+import com.labi.items.SnowGrenade;
 import com.labi.listeners.utils.enums.SnowGrenadeState;
 import com.labi.main.Modemate;
 import org.bukkit.Bukkit;
@@ -7,9 +8,12 @@ import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 public class SnowGrenadeUtils {
+
+    private static final Modemate MODEMATE = Modemate.getInstance();
 
     /* event -> Snowball Hit */
     private static final float BIG_EXPLOSION = 0.8f;
@@ -74,6 +78,10 @@ public class SnowGrenadeUtils {
                 livingEntity.setFireTicks(60);
             }
         });
+    }
+
+    public void applyMetaData(Projectile projectile) {
+        projectile.setMetadata(String.valueOf(SnowGrenade.getItemUUID()), new FixedMetadataValue(MODEMATE, true));
     }
 
 /*    public boolean getState() {

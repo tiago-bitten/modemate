@@ -1,5 +1,6 @@
 package com.labi.listeners.utils;
 
+import com.labi.items.C4;
 import com.labi.listeners.utils.enums.C4State;
 import com.labi.main.Modemate;
 import org.bukkit.*;
@@ -7,6 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -103,6 +105,10 @@ public class C4Utils {
     private void applyParticleEffect(Location location, Particle particle, int amount, int speed) {
         if (location == null) return;
         location.getWorld().spawnParticle(particle, location.getX() + 0.5, location.getY() + 1.15, location.getZ() + 0.5, amount, 0, 0, 0, speed);
+    }
+
+    public void applyMetaData(Block block) {
+        block.setMetadata(String.valueOf(C4.getItemUUID()), new FixedMetadataValue(MODEMATE, true));
     }
 
     public void addC4(Block block) {

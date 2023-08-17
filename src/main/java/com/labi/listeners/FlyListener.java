@@ -11,11 +11,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class FlyListener implements Listener {
 
-    private final JavaPlugin modemate;
     private final ModemateCommand modemateCommand;
 
-    public FlyListener(JavaPlugin modemate, ModemateCommand modemateCommand) {
-        this.modemate = modemate;
+    public FlyListener(ModemateCommand modemateCommand) {
         this.modemateCommand = modemateCommand;
     }
 
