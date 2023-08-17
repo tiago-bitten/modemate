@@ -3,21 +3,19 @@ package com.labi.listeners.utils;
 import com.labi.items.C4;
 import com.labi.listeners.utils.enums.C4State;
 import com.labi.main.Modemate;
+import com.labi.utils.ExplosionUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.List;
 
 import static com.labi.main.Modemate.getInstance;
 
 public class C4Utils {
 
     private static final Modemate MODEMATE = getInstance();
+    private final ExplosionUtil explosion = new ExplosionUtil();
     private static final float EXPLOSION_RANGE = 5.0F;
     private static final float DAMAGE = 7.5F;
     private static final int DELAY_SECONDS = 5;
@@ -33,48 +31,16 @@ public class C4Utils {
         startCount(player);
 
         Bukkit.getScheduler().runTaskLater(MODEMATE, () -> {
-            setDamageNearbyEntities(c4Block, EXPLOSION_RANGE + 0.5F);
-            createExplosion(c4Block, EXPLOSION_RANGE);
+            explosion.explode(c4Block.getLocation(), EXPLOSION_RANGE, DAMAGE);
             c4Block.setType(Material.AIR);
             removeC4();
         }, DELAY_SECONDS * 20L);
     }
 
     public void explodeWithoutDelay() {
-        setDamageNearbyEntities(c4Block, EXPLOSION_RANGE + 0.5F);
-        createExplosion(c4Block, EXPLOSION_RANGE);
+        explosion.explode(c4Block.getLocation(), EXPLOSION_RANGE, DAMAGE);
         c4Block.setType(Material.AIR);
         removeC4();
-    }
-
-    private void createExplosion(Block block, float range) {
-        List<Entity> entities = block.getWorld().getEntities();
-        entities.forEach(entity -> {
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) entity;
-                livingEntity.setInvulnerable(true);
-            }
-        });
-
-        block.getWorld().createExplosion(block.getLocation(), range, true, true);
-        applyParticleEffect(block.getLocation(), Particle.FLASH, 50, 5);
-
-        entities.forEach(entity -> {
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) entity;
-                livingEntity.setInvulnerable(false);
-            }
-        });
-    }
-
-    private void setDamageNearbyEntities(Block block, float explosion) {
-        block.getWorld().getNearbyEntities(block.getLocation(), explosion, explosion, explosion).forEach(entity -> {
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) entity;
-                livingEntity.damage(DAMAGE);
-                livingEntity.setFireTicks(60);
-            }
-        });
     }
 
     private void startCount(Player player) {
