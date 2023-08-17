@@ -2,6 +2,7 @@ package com.labi.listeners.utils;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -15,8 +16,8 @@ import java.util.Set;
 public class LandMineUtils {
 
     private final Set<Location> placedBlocksLocations = new HashSet<>();
-    private static final float EXPLOSION_RANGE = 3.0f;
-    private static final float DAMAGE = 12.0f;
+    private static final float EXPLOSION_RANGE = 4.0f;
+    private static final float DAMAGE = 6.0f;
     private static final int RADIUS = 20;
 
     public void explodeLandMine(Block block, LivingEntity livingEntity) {
@@ -35,6 +36,7 @@ public class LandMineUtils {
         });
 
         block.getWorld().createExplosion(block.getLocation(), range, true, true);
+        applyParticleEffect(block.getLocation(), Particle.FLASH, 50, 5);
 
         entities.forEach(entity -> {
             if (entity instanceof LivingEntity) {
@@ -64,6 +66,11 @@ public class LandMineUtils {
                 livingEntity.setFireTicks(60);
             }
         });
+    }
+
+    private void applyParticleEffect(Location location, Particle particle, int amount, int speed) {
+        if (location == null) return;
+        location.getWorld().spawnParticle(particle, location.getX() + 0.5, location.getY() + 1.15, location.getZ() + 0.5, amount, 0, 0, 0, speed);
     }
 
     public void addBlockLocation(Block block) {
