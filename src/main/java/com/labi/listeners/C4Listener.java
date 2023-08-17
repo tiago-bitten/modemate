@@ -3,6 +3,7 @@ package com.labi.listeners;
 import com.labi.commands.ModemateCommand;
 import com.labi.listeners.utils.C4Utils;
 import com.labi.utils.CooldownMap;
+import com.labi.utils.ExplosionUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,12 +14,18 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 
-import static com.labi.items.C4.*;
+import java.rmi.Remote;
+
+import static com.labi.items.C4.isC4Block;
+import static com.labi.items.C4.isC4Item;
 import static com.labi.items.DetonatorC4.isDetonatorC4Item;
+import static com.labi.listeners.utils.C4Utils.*;
+import static com.labi.utils.ExplosionUtil.explodeAfter;
+import static com.labi.utils.ExplosionUtil.explodeInstantly;
 
 public class C4Listener implements Listener {
 
@@ -53,8 +60,8 @@ public class C4Listener implements Listener {
             return;
         }
 
-        utils.addC4(event.getBlockPlaced());
-        Block c4Block = utils.getC4();
+        Block c4Block = event.getBlockPlaced();
+        utils.addC4(c4Block);
         utils.applyMetaData(c4Block);
 
         cooldownMap.setCooldown(player);
@@ -81,7 +88,13 @@ public class C4Listener implements Listener {
             return;
         }
 
-        utils.explodeWithDelay(player);
+        if (utils.getTimer()) {
+            player.sendMessage(ChatColor.YELLOW + "C4 is already activated!");
+            return;
+        }
+
+        utils.startCount(player);
+        explodeAfter(utils.getC4().getLocation(), EXPLOSION_RANGE, DAMAGE, DELAY_SECONDS);
     }
 
     @EventHandler
@@ -97,7 +110,8 @@ public class C4Listener implements Listener {
             return;
         }
 
-        utils.explodeWithoutDelay();
+        explodeInstantly(block.getLocation(), EXPLOSION_RANGE, DAMAGE);
+        utils.removeC4();
     }
 
     @EventHandler
@@ -125,7 +139,16 @@ public class C4Listener implements Listener {
             return;
         }
 
-        utils.explodeWithDelay(player);
+        if (utils.getTimer()) {
+            player.sendMessage(ChatColor.YELLOW + "C4 is already activated!");
+            block.setType(Material.AIR);
+            event.setCancelled(true);
+            return;
+        }
+
+        utils.startCount(player);
+        explodeAfter(utils.getC4().getLocation(), EXPLOSION_RANGE, DAMAGE, DELAY_SECONDS);
+
         block.setType(Material.AIR);
         event.setCancelled(true);
     }

@@ -3,49 +3,33 @@ package com.labi.listeners.utils;
 import com.labi.items.C4;
 import com.labi.listeners.utils.enums.C4State;
 import com.labi.main.Modemate;
-import com.labi.utils.ExplosionUtil;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import static com.labi.main.Modemate.getInstance;
-import static com.labi.utils.ExplosionUtil.explode;
 
 public class C4Utils {
 
     private static final Modemate MODEMATE = getInstance();
-    private static final float EXPLOSION_RANGE = 5.0F;
-    private static final float DAMAGE = 7.5F;
-    private static final int DELAY_SECONDS = 5;
+    public static final float EXPLOSION_RANGE = 5.0F;
+    public static final float DAMAGE = 7.5F;
+    public static final long DELAY_SECONDS = 100L;
 
     private Block c4Block = null;
     private C4State c4State = C4State.NOT_ACTIVATED;
     private boolean timerStarted = false;
 
-    public void explodeWithDelay(Player player) {
+    public void startCount(Player player) {
         if (timerStarted) return;
         timerStarted = true;
-
-        startCount(player);
-
-        Bukkit.getScheduler().runTaskLater(MODEMATE, () -> {
-            explode(c4Block.getLocation(), EXPLOSION_RANGE, DAMAGE);
-            c4Block.setType(Material.AIR);
-            removeC4();
-        }, DELAY_SECONDS * 20L);
-    }
-
-    public void explodeWithoutDelay() {
-        explode(c4Block.getLocation(), EXPLOSION_RANGE, DAMAGE);
-        c4Block.setType(Material.AIR);
-        removeC4();
-    }
-
-    private void startCount(Player player) {
         new BukkitRunnable() {
-            int count = DELAY_SECONDS;
+            long count = DELAY_SECONDS / 20L;
 
             @Override
             public void run() {
@@ -57,6 +41,7 @@ public class C4Utils {
                 } else {
                     player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "C4 exploded!");
                     timerStarted = false;
+                    removeC4();
                     cancel();
                 }
             }
@@ -99,5 +84,13 @@ public class C4Utils {
 
     public void setC4State(boolean state) {
         c4State = state ? C4State.ACTIVATED : C4State.NOT_ACTIVATED;
+    }
+
+    public boolean getTimer() {
+        return timerStarted;
+    }
+
+    public void setTimer(boolean flag) {
+        timerStarted = flag;
     }
 }
