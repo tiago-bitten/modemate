@@ -4,7 +4,9 @@ import com.labi.commands.ModemateCommand;
 import com.labi.items.LandMine;
 import com.labi.listeners.utils.LandMineUtils;
 import com.labi.utils.CooldownMap;
+import com.labi.utils.ExplosionUtil;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -24,6 +26,9 @@ import java.util.List;
 
 import static com.labi.items.LandMine.isLandMineBlock;
 import static com.labi.items.LandMine.isLandMineItem;
+import static com.labi.listeners.utils.LandMineUtils.DAMAGE;
+import static com.labi.listeners.utils.LandMineUtils.EXPLOSION_RANGE;
+import static com.labi.utils.ExplosionUtil.explodeInstantly;
 
 public class LandMineListener implements Listener {
 
@@ -60,9 +65,9 @@ public class LandMineListener implements Listener {
             return;
         }
 
-        utils.applyMetaData(block);
-
         cooldownMap.setCooldown(player);
+
+        utils.applyMetaData(block);
         utils.addBlockLocation(block);
     }
 
@@ -76,9 +81,9 @@ public class LandMineListener implements Listener {
         Block block = event.getClickedBlock();
         if (!isLandMineBlock(block)) return;
 
-        Player player = event.getPlayer();
+        Location location = block.getLocation();
+        explodeInstantly(location, EXPLOSION_RANGE, true, true, DAMAGE);
 
-        utils.explodeLandMine(block, player);
         utils.removeBlockLocation(block);
         event.setCancelled(true);
     }
@@ -90,9 +95,9 @@ public class LandMineListener implements Listener {
         Block block = event.getBlock();
         if (!isLandMineBlock(block)) return;
 
-        LivingEntity livingEntity = (LivingEntity) event.getEntity();
+        Location location = block.getLocation();
+        explodeInstantly(location, EXPLOSION_RANGE, true, true, DAMAGE);
 
-        utils.explodeLandMine(block, livingEntity);
         utils.removeBlockLocation(block);
         event.setCancelled(true);
     }
