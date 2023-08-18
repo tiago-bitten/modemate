@@ -22,7 +22,7 @@ public class GamemodeCommand extends DefaultImpCommand implements CommandExecuto
 
         Player player = (Player) commandSender;
 
-        if (getState()) {
+        if (player.getGameMode() == GameMode.SURVIVAL) {
             setState(false);
 
             player.setGameMode(GameMode.CREATIVE);
@@ -31,11 +31,17 @@ public class GamemodeCommand extends DefaultImpCommand implements CommandExecuto
             return true;
         }
 
-        setState(true);
+        if (player.getGameMode() == GameMode.CREATIVE) {
+            setState(false);
 
-        player.setGameMode(GameMode.SURVIVAL);
-        player.sendMessage(ChatColor.GREEN + "You are now in survival mode!");
+            player.setGameMode(GameMode.SURVIVAL);
+            player.sendMessage(ChatColor.GREEN + "You are now in survival mode!");
 
+            return true;
+        }
+
+        player.setGameMode(GameMode.CREATIVE);
+        player.sendMessage(ChatColor.GREEN + "You are now in creative mode!");
         return true;
     }
 
