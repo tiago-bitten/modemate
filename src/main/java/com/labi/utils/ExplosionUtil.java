@@ -15,19 +15,19 @@ import static com.labi.utils.ParticlesUtil.applyParticleEffect;
 
 public class ExplosionUtil {
 
-    public static void explodeInstantly(@NonNull Location location, float range, float damage) {
-        createExplosion(location, range);
+    public static void explodeInstantly(@NonNull Location location, float range, boolean setFire, boolean breakBlocks, float damage) {
+        createExplosion(location, range, setFire, breakBlocks);
         setDamageNearbyEntities(location, range, damage);
     }
 
-    public static void explodeAfter(@NonNull Location location, float range, float damage, long ticks) {
+    public static void explodeAfter(@NonNull Location location, float range, boolean setFire, boolean breakBlocks, float damage, long ticks) {
         Bukkit.getScheduler().runTaskLater(Modemate.getInstance(), () -> {
-            createExplosion(location, range);
+            createExplosion(location, range, setFire, breakBlocks);
             setDamageNearbyEntities(location, range, damage);
         }, ticks);
     }
 
-    private static void createExplosion(Location location, float range) {
+    private static void createExplosion(Location location, float range, boolean setFire, boolean breakBlocks) {
         Collection<Entity> entities = location.getWorld().getNearbyEntities(location, range, range, range);
 
         entities.forEach(entity -> {
@@ -37,7 +37,7 @@ public class ExplosionUtil {
             }
         });
 
-        location.getWorld().createExplosion(location, range, true, true);
+        location.getWorld().createExplosion(location, range, setFire, breakBlocks);
         applyParticleEffect(location, Particle.FLASH, 50, 0, 0, 0, 0.5f);
 
         entities.forEach(entity -> {

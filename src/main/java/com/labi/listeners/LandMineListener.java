@@ -28,7 +28,7 @@ import static com.labi.items.LandMine.isLandMineItem;
 public class LandMineListener implements Listener {
 
     private LandMineUtils utils = new LandMineUtils();
-    private CooldownMap<Player> cooldownMap = new CooldownMap<>(2000L);
+    private CooldownMap<Player> cooldownMap = new CooldownMap<>(20000L);
 
     private ModemateCommand modemateCommand;
 

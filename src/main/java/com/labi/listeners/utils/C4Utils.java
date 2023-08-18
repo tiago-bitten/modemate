@@ -12,11 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import static com.labi.main.Modemate.getInstance;
-
 public class C4Utils {
 
-    private static final Modemate MODEMATE = getInstance();
     public static final float EXPLOSION_RANGE = 5.0F;
     public static final float DAMAGE = 7.5F;
     public static final long DELAY_SECONDS = 100L;
@@ -45,7 +42,7 @@ public class C4Utils {
                     cancel();
                 }
             }
-        }.runTaskTimer(MODEMATE, 0L, 20L);
+        }.runTaskTimer(Modemate.getInstance(), 0L, 20L);
     }
 
     private void playSound(Location location) {
@@ -59,7 +56,7 @@ public class C4Utils {
     }
 
     public void applyMetaData(Block block) {
-        block.setMetadata(String.valueOf(C4.getItemUUID()), new FixedMetadataValue(MODEMATE, true));
+        block.setMetadata(String.valueOf(C4.getItemUUID()), new FixedMetadataValue(Modemate.getInstance(), true));
     }
 
     public void addC4(Block block) {

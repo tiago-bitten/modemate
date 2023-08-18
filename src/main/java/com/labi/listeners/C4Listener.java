@@ -3,7 +3,6 @@ package com.labi.listeners;
 import com.labi.commands.ModemateCommand;
 import com.labi.listeners.utils.C4Utils;
 import com.labi.utils.CooldownMap;
-import com.labi.utils.ExplosionUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,11 +13,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-
-import java.rmi.Remote;
 
 import static com.labi.items.C4.isC4Block;
 import static com.labi.items.C4.isC4Item;
@@ -94,7 +90,7 @@ public class C4Listener implements Listener {
         }
 
         utils.startCount(player);
-        explodeAfter(utils.getC4().getLocation(), EXPLOSION_RANGE, DAMAGE, DELAY_SECONDS);
+        explodeAfter(utils.getC4().getLocation(), EXPLOSION_RANGE, true, true, DAMAGE, DELAY_SECONDS);
     }
 
     @EventHandler
@@ -110,7 +106,7 @@ public class C4Listener implements Listener {
             return;
         }
 
-        explodeInstantly(block.getLocation(), EXPLOSION_RANGE, DAMAGE);
+        explodeInstantly(block.getLocation(), EXPLOSION_RANGE, true, true, DAMAGE);
         utils.removeC4();
     }
 
@@ -147,7 +143,7 @@ public class C4Listener implements Listener {
         }
 
         utils.startCount(player);
-        explodeAfter(utils.getC4().getLocation(), EXPLOSION_RANGE, DAMAGE, DELAY_SECONDS);
+        explodeAfter(utils.getC4().getLocation(), EXPLOSION_RANGE, true, true, DAMAGE, DELAY_SECONDS);
 
         block.setType(Material.AIR);
         event.setCancelled(true);

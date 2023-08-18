@@ -4,6 +4,7 @@ package com.labi.listeners;
 import com.labi.commands.ModemateCommand;
 import com.labi.listeners.utils.SnowGrenadeUtils;
 import com.labi.utils.CooldownMap;
+import com.labi.utils.ExplosionUtil;
 import com.labi.utils.ParticlesUtil;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -18,6 +19,9 @@ import org.bukkit.inventory.ItemStack;
 
 import static com.labi.items.SnowGrenade.isSnowGrenadeProjectile;
 import static com.labi.items.SnowGrenade.isSnowGrenadeThrow;
+import static com.labi.listeners.utils.SnowGrenadeUtils.DAMAGE;
+import static com.labi.utils.ExplosionUtil.explodeInstantly;
+import static com.labi.utils.ParticlesUtil.createParticleTrailEffect;
 
 public class SnowGrenadeListener implements Listener {
 
@@ -49,14 +53,11 @@ public class SnowGrenadeListener implements Listener {
             return;
         }
 
-
-
         utils.updateVelocity(projectile);
-        ParticlesUtil.createParticleTrailEffect(projectile, Particle.SNOWBALL, 1, 0, 0, 0, 0, 1L);
-        ParticlesUtil.createParticleTrailEffect(projectile, Particle.SMOKE_NORMAL, 1, 0, 0, 0, 0, 7L);
+        createParticleTrailEffect(projectile, Particle.SNOWBALL, 1, 0, 0, 0, 0, 1L);
+        createParticleTrailEffect(projectile, Particle.SMOKE_NORMAL, 1, 0, 0, 0, 0, 7L);
 
         utils.applyMetaData(projectile);
-
         cooldownMap.setCooldown(player);
     }
 
@@ -65,17 +66,13 @@ public class SnowGrenadeListener implements Listener {
         if (!modemateCommand.isEnable()) return;
 
         Projectile projectile = event.getEntity();
+        if (!(projectile.getShooter() instanceof Player)) return;
+        if (!isSnowGrenadeProjectile(projectile)) return;
 
         Entity entity = event.getHitEntity();
         Block hitBlock = event.getHitBlock();
         if (hitBlock != null && entity != null) return;
 
-        if (!isSnowGrenadeProjectile(projectile)) return;
-
-        if (!(projectile.getShooter() instanceof Player)) return;
-
-        Player player = (Player) projectile.getShooter();
-
-        utils.explodeSnowGrenade(projectile, player);
+        explodeInstantly(projectile.getLocation(), utils.randomExplosion(), utils.setFire(), true, DAMAGE);
     }
 }

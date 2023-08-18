@@ -17,6 +17,7 @@ public class PlayerPermissionJoinListener implements Listener {
     public PlayerPermissionJoinListener(ModemateCommand modemateCommand) {
         this.modemateCommand = modemateCommand;
     }
+
     @EventHandler
     public void onOperatorJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
