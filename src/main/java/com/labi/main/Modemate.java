@@ -21,6 +21,7 @@ public final class Modemate extends JavaPlugin {
     private FlyCommand flyCommand;
     private GamemodeCommand gamemodeCommand;
     private BanCommand banCommand;
+    private LifeCommand lifeCommand;
 
     @Override
     public void onEnable() {
@@ -51,6 +52,9 @@ public final class Modemate extends JavaPlugin {
 
         banCommand = new BanCommand("mban", PermissionsEnum.OPERATOR);
         getCommand(banCommand.COMMAND_NAME).setExecutor(banCommand);
+
+        lifeCommand = new LifeCommand("mlife", PermissionsEnum.OPERATOR);
+        getCommand(lifeCommand.COMMAND_NAME).setExecutor(lifeCommand);
 
         /* Listeners */
         getServer().getPluginManager().registerEvents(new SnowGrenadeListener(modemateCommand), instance);

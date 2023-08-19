@@ -1,5 +1,6 @@
 package com.labi.commands;
 
+import com.labi.main.Modemate;
 import com.labi.permissions.PermissionsEnum;
 import org.bukkit.BanList;
 import org.bukkit.ChatColor;
@@ -84,7 +85,7 @@ public class BanCommand extends DefaultImpCommand implements CommandExecutor, Ta
                     cancel();
                 }
             }
-        }.runTaskTimer(getServer().getPluginManager().getPlugin("modemate"), 0, 20);
+        }.runTaskTimer(Modemate.getInstance(), 0, 20);
     }
 
     private void ban(Player player, String reason, CommandSender author) {
