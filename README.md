@@ -4,7 +4,7 @@
 ![Maven](https://img.shields.io/badge/Maven-red?style=flat-square)
 
 # About the plugin
-CustomCraft is a versatile Minecraft plugin developed in Java for the Spigot server platform (compatible with Minecraft version 1.20.1). This plugin enhances your Minecraft server by introducing a range of powerful and fun commands and crafting recipes.
+modemate is a versatile Minecraft plugin developed in Java for the Spigot server platform (compatible with Minecraft version 1.20.1). This plugin enhances your Minecraft server by introducing a range of powerful and fun commands and crafting recipes.
 
 ## Features
 ### Custom commands
